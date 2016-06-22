@@ -1,0 +1,65 @@
+class Teste {
+private:
+bool a;
+string v;
+int j;
+Teste l,log;
+double u;
+public:
+
+	int toString( )
+	int cx,cv;
+	string str;
+	{
+           u = 7.15;
+           j = 7;
+	   return 7.15;
+	}
+
+	Teste(bool verdade){
+          v = "sdasdas"+a+"asdsd";
+          a = 7 >= 8;
+          a = 8 > 7;
+	  a = 8 < 7;
+          a = verdade && true;
+	  a = 7 =< 8;
+          a = false || true;
+	}
+
+
+	string toString(int abacate, double carate){
+	   if false :
+           a = true;
+	   endIf
+
+	   if 7>6 :
+           a = true;
+           [ else:
+             a = false;
+           ]
+	   endIf
+           while true
+             a = true;
+             break
+           endWhile
+
+           for int o = 7 ; 9>=7 ; 9:
+              a = true;
+	      break
+           endFor 
+	   Escreva "asdasdasd", 7;
+	   Leia 7-9;
+	   return v;
+	}
+
+	double toString(int op, double po){
+		return 7*8/7;
+	}
+
+
+	void main ()
+        Teste t;
+        bool booleano, falso;
+	{
+	}
+}

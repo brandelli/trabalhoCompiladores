@@ -1,0 +1,8 @@
+class Teste {
+private:
+int a,b,c;
+string d;
+double e;
+bool f;
+public:
+}

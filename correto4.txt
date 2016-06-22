@@ -1,0 +1,34 @@
+class Teste {
+private:
+bool a;
+string v;
+int j;
+float fl;
+Teste l,log;
+double u;
+public:
+
+	int toString( )
+	int cx,cv;
+	{
+           c.jdahskjdh();
+           u = 7.15 ;
+           j = 7;
+	   return 7.15;
+	}
+
+	Teste(bool verdade){
+          v_a = "sdasdas"+a+"asdsd";
+    
+          a = 7 >= 8;
+          a = a && a;
+	  a = 7 =< 8;
+          a = a || a;
+	}
+
+      void main(){
+         
+      }
+
+
+}
