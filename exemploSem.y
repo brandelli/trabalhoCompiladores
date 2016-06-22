@@ -22,9 +22,14 @@
 
 %%
 
-prog : { currEscopo = ""; currClass = ClasseID.VarGlobal; } clas ;
+prog : { currEscopo = "Global"; currClass = ClasseID.VarGlobal; } clas ;
 
-clas :  CLASSE IDENT {tipoClasse = (String)$2;} '{' privados publicos '}'
+clas :  CLASSE IDENT {tipoClasse = (String)$2;  TS_entry nodo = ts.pesquisa($2);
+    	                    if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                              yyerror("(sem) variavel >" + $2 + "< jah declarada");
+
+                          else ts.insert(new TS_entry($2, (TS_entry)Tp_CLASS, currEscopo, ClasseID.TipoClasse));
+                        }'{' privados publicos '}'
  			;
 
 
@@ -40,7 +45,7 @@ dList : type {currType = $1;} decl dList
 			;
 
 decl : IDENT moreDecl ';'{  TS_entry nodo = ts.pesquisa($1);
-    	                    if (nodo != null)
+    	                    if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               yyerror("(sem) variavel >" + $1 + "< jah declarada");
 
                           else ts.insert(new TS_entry($1, (TS_entry)currType, currEscopo, currClass));
@@ -48,8 +53,9 @@ decl : IDENT moreDecl ';'{  TS_entry nodo = ts.pesquisa($1);
       ;
 
 moreDecl : ',' IDENT moreDecl {  TS_entry nodo = ts.pesquisa($2);
-    	                    if (nodo != null)
+    	                    if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               yyerror("(sem) variavel >" + $2 + "< jah declarada");
+
                           else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, currClass));
                         }
          |
@@ -78,11 +84,31 @@ blocos:  blocos bl
  			|
 			;
 
-bl : INT IDENT '(' parametros ')' dList bloco
-   | BOOL   IDENT '(' parametros ')' dList bloco
-	 | DOUBLE  IDENT '(' parametros ')' dList bloco
-	 | STRING IDENT '(' parametros ')' dList bloco
-   | IDENT '(' parametros ')' dList blocoConstrutor {         if(!($1.equals(tipoClasse))){
+bl : INT IDENT '(' parametros ')' {currEscopo = (String)$2;
+TS_entry nodo = ts.pesquisa($2);
+                         if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                             yyerror("metodo ja declarado >" + $2 + "< jah declarada");
+
+                         else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
+   | BOOL   IDENT '(' parametros ')' {currEscopo = (String)$2;
+   TS_entry nodo = ts.pesquisa($2);
+                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                                yyerror("metodo ja declarado >" + $2 + "< jah declarada");
+
+                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
+	 | DOUBLE  IDENT '(' parametros ')'  {currEscopo = (String)$2;
+   TS_entry nodo = ts.pesquisa($2);
+                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                                yyerror("metodo ja declarado >" + $2 + "< jah declarada");
+
+                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
+	 | STRING IDENT '(' parametros ')' {currEscopo = (String)$2;
+   TS_entry nodo = ts.pesquisa($2);
+                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                                yyerror("metodo ja declarado >" + $2 + "< jah declarada");
+
+                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
+   | IDENT '(' parametros ')' blocoConstrutor {         if(!($1.equals(tipoClasse))){
 											  yyerror("(sem) Nome de tipo <" + $1 + "> nao declarado ");
 											}
               }
@@ -186,14 +212,6 @@ exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
                       else
 			                    $$ = nodo.getTipo();
 			            }
-
-    | IDENT '[' exp ']'
-                 { TS_entry nodo = ts.pesquisa($1);
-    	             if (nodo == null)
-	                     yyerror("(sem) var <" + $1 + "> nao declarada");
-                   else
-                       $$ = validaTipo('[', nodo, (TS_entry)$3);
-						     }
      | exp '=' exp  {$$ = validaTipo(ATRIB, (TS_entry)$1, (TS_entry)$3);}
      | metodo
      ;
@@ -213,22 +231,22 @@ lParametrosMetodo : ',' exp lParametrosMetodo
 
   private Yylex lexer;
 
+  private String tipoClasse;
+  private Object currType;
+  private String currEscopo;
+  private ClasseID currClass;
   private TabSimb ts;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
 	public static TS_entry Tp_DOUBLE =  new TS_entry("double", null, "", ClasseID.TipoBase);
   public static TS_entry Tp_BOOL = new TS_entry("bool", null, "", ClasseID.TipoBase);
   public static TS_entry Tp_STRING = new TS_entry("string", null, "", ClasseID.TipoBase);
-	public static TS_entry Tp_CLASS = new TS_entry("classe", null, "", ClasseID.TipoClasse);
+	public static TS_entry Tp_CLASS = new TS_entry("tipo de classe", null, "", ClasseID.TipoClasse);
   public static TS_entry Tp_ERRO = new TS_entry("_erro_", null, "", ClasseID.TipoBase);
 
   public static final int ARRAY = 1500;
   public static final int ATRIB = 1600;
 
-	private String tipoClasse;
-	private Object currType;
-  private String currEscopo;
-  private ClasseID currClass;
 
   private int yylex () {
     int yyl_return = -1;

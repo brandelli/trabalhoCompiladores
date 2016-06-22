@@ -47,6 +47,10 @@ public class TS_entry
        return tipo2str(this);
    }
 
+   public String getEscopo() {
+       return escopo;
+   }
+
    public int getNumElem() {
        return nElem;
    }
@@ -54,7 +58,9 @@ public class TS_entry
    public TS_entry getTipoBase() {
        return tipoBase;
    }
-
+   public TabSimb getLocais() {
+       return locais;
+   }
 
    public String toString() {
        StringBuilder aux = new StringBuilder("");

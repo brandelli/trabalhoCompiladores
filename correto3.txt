@@ -1,9 +1,8 @@
 class Teste {
 private:
 bool a;
-string v;
+string v_a;
 int j;
-float fl;
 Teste l,log;
 double u;
 public:
@@ -14,15 +13,15 @@ public:
            c.jdahskjdh();
            u = 7.15 ;
            j = 7;
-	   return 7.15;
+	   	 		return 7.15;
 	}
 
 	Teste(bool verdade){
           v_a = "sdasdas"+a+"asdsd";
-    
+
           a = 7 >= 8;
           a = a && a;
-	  a = 7 =< 8;
+	  			a = 7 =< 8;
           a = a || a;
 	}
 
