@@ -65,72 +65,76 @@
 
   38  bloco : '{' listacmd retorno '}'
 
-  39  retorno : RETORNO exp ';'
+  39  $$9 :
 
-  40  listacmd : listacmd cmd
-  41           |
+  40  retorno : RETORNO exp $$9 ';'
 
-  42  listacmdrep : listacmdrep cmd
-  43              | BREAK
-  44              |
+  41  listacmd : listacmd cmd
+  42           |
 
-  45  cmd : exp ';'
+  43  listacmdrep : listacmdrep cmd
+  44              | BREAK
+  45              |
 
-  46  $$9 :
+  46  cmd : exp ';'
 
-  47  cmd : IF exp $$9 ':' listacmd else ENDIF
-  48      | while
-  49      | for
-  50      | ESCREVA escreva ';'
-  51      | LEIA leia ';'
+  47  $$10 :
 
-  52  else : '[' ELSE ':' cmd listacmd ']'
-  53       |
+  48  cmd : IF exp $$10 ':' listacmd else ENDIF
+  49      | while
+  50      | for
+  51      | ESCREVA escreva ';'
+  52      | LEIA leia ';'
 
-  54  escreva : exp parametroEscreva
+  53  else : '[' ELSE ':' cmd listacmd ']'
+  54       |
 
-  55  leia : exp
+  55  $$11 :
 
-  56  parametroEscreva : ',' exp
-  57                   |
+  56  escreva : exp $$11 parametroEscreva
 
-  58  $$10 :
+  57  leia : exp
 
-  59  while : WHILE exp $$10 cmd listacmdrep ENDWHILE
+  58  parametroEscreva : ',' exp
+  59                   |
 
-  60  for : FOR atribuicaoFor ';' exp ';' exp ':' cmd listacmdrep ENDFOR
+  60  $$12 :
 
-  61  atribuicaoFor : type IDENT '=' IDENT
-  62                | type IDENT '=' NUM
-  63                | type IDENT '=' DOUBLE
+  61  while : WHILE exp $$12 cmd listacmdrep ENDWHILE
 
-  64  exp : exp '+' exp
-  65      | exp '*' exp
-  66      | exp '-' exp
-  67      | exp '/' exp
-  68      | exp '>' exp
-  69      | exp '<' exp
-  70      | exp AND exp
-  71      | exp OR exp
-  72      | exp LESSEREQUAL exp
-  73      | exp GREATEREQUAL exp
-  74      | TRUE
-  75      | FALSE
-  76      | NUM
-  77      | DOUBLE
-  78      | '(' exp ')'
-  79      | LITERAL
-  80      | IDENT
-  81      | exp '=' exp
-  82      | metodo
+  62  $$13 :
 
-  83  metodo : IDENT '.' IDENT '(' parametrosMetodo ')'
+  63  $$14 :
 
-  84  parametrosMetodo : exp lParametrosMetodo
-  85                   |
+  64  for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR
 
-  86  lParametrosMetodo : ',' exp lParametrosMetodo
-  87                    |
+  65  exp : exp '+' exp
+  66      | exp '*' exp
+  67      | exp '-' exp
+  68      | exp '/' exp
+  69      | exp '>' exp
+  70      | exp '<' exp
+  71      | exp AND exp
+  72      | exp OR exp
+  73      | exp LESSEREQUAL exp
+  74      | exp GREATEREQUAL exp
+  75      | TRUE
+  76      | FALSE
+  77      | NUM
+  78      | DOUBLE
+  79      | '(' exp ')'
+  80      | LITERAL
+  81      | IDENT
+  82      | exp '=' exp
+  83      | metodo
+
+  84  metodo : IDENT '.' IDENT '(' parametrosMetodo ')'
+
+  85  parametrosMetodo : exp lParametrosMetodo
+  86                   |
+
+  87  lParametrosMetodo : ',' exp lParametrosMetodo
+  88                    |
 
 state 0
 	$accept : . prog $end  (0)
@@ -664,9 +668,9 @@ state 61
 
 state 62
 	blocoConstrutor : '{' . listacmd '}'  (37)
-	listacmd : .  (41)
+	listacmd : .  (42)
 
-	.  reduce 41
+	.  reduce 42
 
 	listacmd  goto 70
 
@@ -731,7 +735,7 @@ state 69
 
 state 70
 	blocoConstrutor : '{' listacmd . '}'  (37)
-	listacmd : listacmd . cmd  (40)
+	listacmd : listacmd . cmd  (41)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -832,71 +836,71 @@ state 76
 
 
 state 77
-	exp : IDENT .  (80)
-	metodo : IDENT . '.' IDENT '(' parametrosMetodo ')'  (83)
+	exp : IDENT .  (81)
+	metodo : IDENT . '.' IDENT '(' parametrosMetodo ')'  (84)
 
 	'.'  shift 100
-	IDENT  reduce 80
-	NUM  reduce 80
-	DOUBLE  reduce 80
-	TRUE  reduce 80
-	FALSE  reduce 80
-	LITERAL  reduce 80
-	AND  reduce 80
-	IF  reduce 80
-	WHILE  reduce 80
-	FOR  reduce 80
-	ESCREVA  reduce 80
-	LEIA  reduce 80
-	OR  reduce 80
-	GREATEREQUAL  reduce 80
-	LESSEREQUAL  reduce 80
-	'='  reduce 80
-	'>'  reduce 80
-	'<'  reduce 80
-	'+'  reduce 80
-	'-'  reduce 80
-	'/'  reduce 80
-	'*'  reduce 80
-	';'  reduce 80
-	','  reduce 80
-	'('  reduce 80
-	')'  reduce 80
-	':'  reduce 80
+	IDENT  reduce 81
+	NUM  reduce 81
+	DOUBLE  reduce 81
+	TRUE  reduce 81
+	FALSE  reduce 81
+	LITERAL  reduce 81
+	AND  reduce 81
+	IF  reduce 81
+	WHILE  reduce 81
+	FOR  reduce 81
+	ESCREVA  reduce 81
+	LEIA  reduce 81
+	OR  reduce 81
+	GREATEREQUAL  reduce 81
+	LESSEREQUAL  reduce 81
+	'='  reduce 81
+	'>'  reduce 81
+	'<'  reduce 81
+	'+'  reduce 81
+	'-'  reduce 81
+	'/'  reduce 81
+	'*'  reduce 81
+	';'  reduce 81
+	','  reduce 81
+	'('  reduce 81
+	')'  reduce 81
+	':'  reduce 81
 
 
 state 78
-	exp : NUM .  (76)
-
-	.  reduce 76
-
-
-state 79
-	exp : DOUBLE .  (77)
+	exp : NUM .  (77)
 
 	.  reduce 77
 
 
+state 79
+	exp : DOUBLE .  (78)
+
+	.  reduce 78
+
+
 state 80
-	exp : TRUE .  (74)
-
-	.  reduce 74
-
-
-state 81
-	exp : FALSE .  (75)
+	exp : TRUE .  (75)
 
 	.  reduce 75
 
 
-state 82
-	exp : LITERAL .  (79)
+state 81
+	exp : FALSE .  (76)
 
-	.  reduce 79
+	.  reduce 76
+
+
+state 82
+	exp : LITERAL .  (80)
+
+	.  reduce 80
 
 
 state 83
-	cmd : IF . exp $$9 ':' listacmd else ENDIF  (47)
+	cmd : IF . exp $$10 ':' listacmd else ENDIF  (48)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -912,7 +916,7 @@ state 83
 
 
 state 84
-	while : WHILE . exp $$10 cmd listacmdrep ENDWHILE  (59)
+	while : WHILE . exp $$12 cmd listacmdrep ENDWHILE  (61)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -928,21 +932,14 @@ state 84
 
 
 state 85
-	for : FOR . atribuicaoFor ';' exp ';' exp ':' cmd listacmdrep ENDFOR  (60)
+	for : FOR . IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
 
-	IDENT  shift 10
-	INT  shift 11
-	BOOL  shift 12
-	STRING  shift 13
-	DOUBLE  shift 14
+	IDENT  shift 103
 	.  error
-
-	type  goto 103
-	atribuicaoFor  goto 104
 
 
 state 86
-	cmd : ESCREVA . escreva ';'  (50)
+	cmd : ESCREVA . escreva ';'  (51)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -953,13 +950,13 @@ state 86
 	'('  shift 89
 	.  error
 
-	exp  goto 105
-	escreva  goto 106
+	exp  goto 104
+	escreva  goto 105
 	metodo  goto 94
 
 
 state 87
-	cmd : LEIA . leia ';'  (51)
+	cmd : LEIA . leia ';'  (52)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -970,8 +967,8 @@ state 87
 	'('  shift 89
 	.  error
 
-	exp  goto 107
-	leia  goto 108
+	exp  goto 106
+	leia  goto 107
 	metodo  goto 94
 
 
@@ -982,7 +979,7 @@ state 88
 
 
 state 89
-	exp : '(' . exp ')'  (78)
+	exp : '(' . exp ')'  (79)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -993,97 +990,97 @@ state 89
 	'('  shift 89
 	.  error
 
-	exp  goto 109
+	exp  goto 108
 	metodo  goto 94
 
 
 state 90
-	cmd : exp . ';'  (45)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+	cmd : exp . ';'  (46)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	';'  shift 121
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  shift 120
 	.  error
 
 
 state 91
-	listacmd : listacmd cmd .  (40)
+	listacmd : listacmd cmd .  (41)
 
-	.  reduce 40
+	.  reduce 41
 
 
 state 92
-	cmd : while .  (48)
-
-	.  reduce 48
-
-
-state 93
-	cmd : for .  (49)
+	cmd : while .  (49)
 
 	.  reduce 49
 
 
-state 94
-	exp : metodo .  (82)
+state 93
+	cmd : for .  (50)
 
-	.  reduce 82
+	.  reduce 50
+
+
+state 94
+	exp : metodo .  (83)
+
+	.  reduce 83
 
 
 state 95
 	bl : INT IDENT '(' parametros ')' $$5 dList . bloco  (23)
 
-	'{'  shift 122
+	'{'  shift 121
 	.  error
 
-	bloco  goto 123
+	bloco  goto 122
 
 
 state 96
 	bl : BOOL IDENT '(' parametros ')' $$6 dList . bloco  (25)
 
-	'{'  shift 122
+	'{'  shift 121
 	.  error
 
-	bloco  goto 124
+	bloco  goto 123
 
 
 state 97
 	bl : STRING IDENT '(' parametros ')' $$8 dList . bloco  (29)
 
-	'{'  shift 122
+	'{'  shift 121
 	.  error
 
-	bloco  goto 125
+	bloco  goto 124
 
 
 state 98
 	bl : DOUBLE IDENT '(' parametros ')' $$7 dList . bloco  (27)
 
-	'{'  shift 122
+	'{'  shift 121
 	.  error
 
-	bloco  goto 126
+	bloco  goto 125
 
 
 state 99
@@ -1093,206 +1090,245 @@ state 99
 
 
 state 100
-	metodo : IDENT '.' . IDENT '(' parametrosMetodo ')'  (83)
+	metodo : IDENT '.' . IDENT '(' parametrosMetodo ')'  (84)
 
-	IDENT  shift 127
+	IDENT  shift 126
 	.  error
 
 
 state 101
-	cmd : IF exp . $$9 ':' listacmd else ENDIF  (47)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	$$9 : .  (46)
+	cmd : IF exp . $$10 ':' listacmd else ENDIF  (48)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$10 : .  (47)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	':'  reduce 46
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	':'  reduce 47
 
-	$$9  goto 128
+	$$10  goto 127
 
 
 state 102
-	while : WHILE exp . $$10 cmd listacmdrep ENDWHILE  (59)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	$$10 : .  (58)
+	while : WHILE exp . $$12 cmd listacmdrep ENDWHILE  (61)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$12 : .  (60)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 58
-	NUM  reduce 58
-	DOUBLE  reduce 58
-	TRUE  reduce 58
-	FALSE  reduce 58
-	LITERAL  reduce 58
-	IF  reduce 58
-	WHILE  reduce 58
-	FOR  reduce 58
-	ESCREVA  reduce 58
-	LEIA  reduce 58
-	'('  reduce 58
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	IDENT  reduce 60
+	NUM  reduce 60
+	DOUBLE  reduce 60
+	TRUE  reduce 60
+	FALSE  reduce 60
+	LITERAL  reduce 60
+	IF  reduce 60
+	WHILE  reduce 60
+	FOR  reduce 60
+	ESCREVA  reduce 60
+	LEIA  reduce 60
+	'('  reduce 60
 
-	$$10  goto 129
+	$$12  goto 128
 
 
 state 103
-	atribuicaoFor : type . IDENT '=' IDENT  (61)
-	atribuicaoFor : type . IDENT '=' NUM  (62)
-	atribuicaoFor : type . IDENT '=' DOUBLE  (63)
+	for : FOR IDENT . '=' exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
 
-	IDENT  shift 130
+	'='  shift 129
 	.  error
 
 
 state 104
-	for : FOR atribuicaoFor . ';' exp ';' exp ':' cmd listacmdrep ENDFOR  (60)
+	escreva : exp . $$11 parametroEscreva  (56)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$11 : .  (55)
+
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 55
+	','  reduce 55
+
+	$$11  goto 130
+
+
+state 105
+	cmd : ESCREVA escreva . ';'  (51)
 
 	';'  shift 131
 	.  error
 
 
-state 105
-	escreva : exp . parametroEscreva  (54)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	parametroEscreva : .  (57)
-
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	','  shift 132
-	';'  reduce 57
-
-	parametroEscreva  goto 133
-
-
 state 106
-	cmd : ESCREVA escreva . ';'  (50)
+	leia : exp .  (57)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	';'  shift 134
-	.  error
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 57
 
 
 state 107
-	leia : exp .  (55)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+	cmd : LEIA leia . ';'  (52)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	';'  reduce 55
+	';'  shift 132
+	.  error
 
 
 state 108
-	cmd : LEIA leia . ';'  (51)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : '(' exp . ')'  (79)
+	exp : exp . '=' exp  (82)
 
-	';'  shift 135
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	')'  shift 133
 	.  error
 
 
 state 109
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : '(' exp . ')'  (78)
-	exp : exp . '=' exp  (81)
+	exp : exp AND . exp  (71)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	')'  shift 136
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
 	.  error
+
+	exp  goto 134
+	metodo  goto 94
 
 
 state 110
-	exp : exp AND . exp  (70)
+	exp : exp OR . exp  (72)
+
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
+	.  error
+
+	exp  goto 135
+	metodo  goto 94
+
+
+state 111
+	exp : exp GREATEREQUAL . exp  (74)
+
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
+	.  error
+
+	exp  goto 136
+	metodo  goto 94
+
+
+state 112
+	exp : exp LESSEREQUAL . exp  (73)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1307,8 +1343,8 @@ state 110
 	metodo  goto 94
 
 
-state 111
-	exp : exp OR . exp  (71)
+state 113
+	exp : exp '=' . exp  (82)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1323,8 +1359,8 @@ state 111
 	metodo  goto 94
 
 
-state 112
-	exp : exp GREATEREQUAL . exp  (73)
+state 114
+	exp : exp '>' . exp  (69)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1339,8 +1375,8 @@ state 112
 	metodo  goto 94
 
 
-state 113
-	exp : exp LESSEREQUAL . exp  (72)
+state 115
+	exp : exp '<' . exp  (70)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1355,8 +1391,8 @@ state 113
 	metodo  goto 94
 
 
-state 114
-	exp : exp '=' . exp  (81)
+state 116
+	exp : exp '+' . exp  (65)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1371,8 +1407,8 @@ state 114
 	metodo  goto 94
 
 
-state 115
-	exp : exp '>' . exp  (68)
+state 117
+	exp : exp '-' . exp  (67)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1387,8 +1423,8 @@ state 115
 	metodo  goto 94
 
 
-state 116
-	exp : exp '<' . exp  (69)
+state 118
+	exp : exp '/' . exp  (68)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1403,8 +1439,8 @@ state 116
 	metodo  goto 94
 
 
-state 117
-	exp : exp '+' . exp  (64)
+state 119
+	exp : exp '*' . exp  (66)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1419,109 +1455,61 @@ state 117
 	metodo  goto 94
 
 
-state 118
-	exp : exp '-' . exp  (66)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 145
-	metodo  goto 94
-
-
-state 119
-	exp : exp '/' . exp  (67)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 146
-	metodo  goto 94
-
-
 state 120
-	exp : exp '*' . exp  (65)
+	cmd : exp ';' .  (46)
 
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 147
-	metodo  goto 94
+	.  reduce 46
 
 
 state 121
-	cmd : exp ';' .  (45)
+	bloco : '{' . listacmd retorno '}'  (38)
+	listacmd : .  (42)
 
-	.  reduce 45
+	.  reduce 42
+
+	listacmd  goto 145
 
 
 state 122
-	bloco : '{' . listacmd retorno '}'  (38)
-	listacmd : .  (41)
-
-	.  reduce 41
-
-	listacmd  goto 148
-
-
-state 123
 	bl : INT IDENT '(' parametros ')' $$5 dList bloco .  (23)
 
 	.  reduce 23
 
 
-state 124
+state 123
 	bl : BOOL IDENT '(' parametros ')' $$6 dList bloco .  (25)
 
 	.  reduce 25
 
 
-state 125
+state 124
 	bl : STRING IDENT '(' parametros ')' $$8 dList bloco .  (29)
 
 	.  reduce 29
 
 
-state 126
+state 125
 	bl : DOUBLE IDENT '(' parametros ')' $$7 dList bloco .  (27)
 
 	.  reduce 27
 
 
-state 127
-	metodo : IDENT '.' IDENT . '(' parametrosMetodo ')'  (83)
+state 126
+	metodo : IDENT '.' IDENT . '(' parametrosMetodo ')'  (84)
 
-	'('  shift 149
+	'('  shift 146
+	.  error
+
+
+state 127
+	cmd : IF exp $$10 . ':' listacmd else ENDIF  (48)
+
+	':'  shift 147
 	.  error
 
 
 state 128
-	cmd : IF exp $$9 . ':' listacmd else ENDIF  (47)
-
-	':'  shift 150
-	.  error
-
-
-state 129
-	while : WHILE exp $$10 . cmd listacmdrep ENDWHILE  (59)
+	while : WHILE exp $$12 . cmd listacmdrep ENDWHILE  (61)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -1538,131 +1526,149 @@ state 129
 	.  error
 
 	exp  goto 90
-	cmd  goto 151
+	cmd  goto 148
 	while  goto 92
 	for  goto 93
 	metodo  goto 94
 
 
-state 130
-	atribuicaoFor : type IDENT . '=' IDENT  (61)
-	atribuicaoFor : type IDENT . '=' NUM  (62)
-	atribuicaoFor : type IDENT . '=' DOUBLE  (63)
+state 129
+	for : FOR IDENT '=' . exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
 
-	'='  shift 152
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
 	.  error
+
+	exp  goto 149
+	metodo  goto 94
+
+
+state 130
+	escreva : exp $$11 . parametroEscreva  (56)
+	parametroEscreva : .  (59)
+
+	','  shift 150
+	';'  reduce 59
+
+	parametroEscreva  goto 151
 
 
 state 131
-	for : FOR atribuicaoFor ';' . exp ';' exp ':' cmd listacmdrep ENDFOR  (60)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 153
-	metodo  goto 94
-
-
-state 132
-	parametroEscreva : ',' . exp  (56)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 154
-	metodo  goto 94
-
-
-state 133
-	escreva : exp parametroEscreva .  (54)
-
-	.  reduce 54
-
-
-state 134
-	cmd : ESCREVA escreva ';' .  (50)
-
-	.  reduce 50
-
-
-state 135
-	cmd : LEIA leia ';' .  (51)
+	cmd : ESCREVA escreva ';' .  (51)
 
 	.  reduce 51
 
 
-state 136
-	exp : '(' exp ')' .  (78)
+state 132
+	cmd : LEIA leia ';' .  (52)
 
-	.  reduce 78
-
-
-state 137
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp AND exp .  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-
-	.  reduce 70
+	.  reduce 52
 
 
-state 138
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp OR exp .  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 133
+	exp : '(' exp ')' .  (79)
+
+	.  reduce 79
+
+
+state 134
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp AND exp .  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
 	.  reduce 71
 
 
-state 139
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp GREATEREQUAL exp .  (73)
-	exp : exp . '=' exp  (81)
+state 135
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp OR exp .  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	AND  shift 110
-	OR  shift 111
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
+	.  reduce 72
+
+
+state 136
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp GREATEREQUAL exp .  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	IDENT  reduce 74
+	NUM  reduce 74
+	DOUBLE  reduce 74
+	TRUE  reduce 74
+	FALSE  reduce 74
+	LITERAL  reduce 74
+	IF  reduce 74
+	WHILE  reduce 74
+	FOR  reduce 74
+	ESCREVA  reduce 74
+	LEIA  reduce 74
+	'='  reduce 74
+	';'  reduce 74
+	','  reduce 74
+	'('  reduce 74
+	')'  reduce 74
+	':'  reduce 74
+
+
+state 137
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp LESSEREQUAL exp .  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
 	IDENT  reduce 73
 	NUM  reduce 73
 	DOUBLE  reduce 73
@@ -1682,147 +1688,69 @@ state 139
 	':'  reduce 73
 
 
-state 140
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp LESSEREQUAL exp .  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 138
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	exp : exp '=' exp .  (82)
 
-	AND  shift 110
-	OR  shift 111
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 72
-	NUM  reduce 72
-	DOUBLE  reduce 72
-	TRUE  reduce 72
-	FALSE  reduce 72
-	LITERAL  reduce 72
-	IF  reduce 72
-	WHILE  reduce 72
-	FOR  reduce 72
-	ESCREVA  reduce 72
-	LEIA  reduce 72
-	'='  reduce 72
-	';'  reduce 72
-	','  reduce 72
-	'('  reduce 72
-	')'  reduce 72
-	':'  reduce 72
-
-
-state 141
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	exp : exp '=' exp .  (81)
-
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 81
-	NUM  reduce 81
-	DOUBLE  reduce 81
-	TRUE  reduce 81
-	FALSE  reduce 81
-	LITERAL  reduce 81
-	IF  reduce 81
-	WHILE  reduce 81
-	FOR  reduce 81
-	ESCREVA  reduce 81
-	LEIA  reduce 81
-	';'  reduce 81
-	','  reduce 81
-	'('  reduce 81
-	')'  reduce 81
-	':'  reduce 81
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	IDENT  reduce 82
+	NUM  reduce 82
+	DOUBLE  reduce 82
+	TRUE  reduce 82
+	FALSE  reduce 82
+	LITERAL  reduce 82
+	IF  reduce 82
+	WHILE  reduce 82
+	FOR  reduce 82
+	ESCREVA  reduce 82
+	LEIA  reduce 82
+	';'  reduce 82
+	','  reduce 82
+	'('  reduce 82
+	')'  reduce 82
+	':'  reduce 82
 
 
-state 142
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp '>' exp .  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 139
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp '>' exp .  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	AND  shift 110
-	OR  shift 111
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 68
-	NUM  reduce 68
-	DOUBLE  reduce 68
-	TRUE  reduce 68
-	FALSE  reduce 68
-	LITERAL  reduce 68
-	IF  reduce 68
-	WHILE  reduce 68
-	FOR  reduce 68
-	ESCREVA  reduce 68
-	LEIA  reduce 68
-	'='  reduce 68
-	';'  reduce 68
-	','  reduce 68
-	'('  reduce 68
-	')'  reduce 68
-	':'  reduce 68
-
-
-state 143
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp '<' exp .  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-
-	AND  shift 110
-	OR  shift 111
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
+	AND  shift 109
+	OR  shift 110
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
 	IDENT  reduce 69
 	NUM  reduce 69
 	DOUBLE  reduce 69
@@ -1842,151 +1770,63 @@ state 143
 	':'  reduce 69
 
 
-state 144
-	exp : exp . '+' exp  (64)
-	exp : exp '+' exp .  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 140
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp '<' exp .  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	AND  shift 110
-	OR  shift 111
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 64
-	NUM  reduce 64
-	DOUBLE  reduce 64
-	TRUE  reduce 64
-	FALSE  reduce 64
-	LITERAL  reduce 64
-	IF  reduce 64
-	WHILE  reduce 64
-	FOR  reduce 64
-	ESCREVA  reduce 64
-	LEIA  reduce 64
-	GREATEREQUAL  reduce 64
-	LESSEREQUAL  reduce 64
-	'='  reduce 64
-	'>'  reduce 64
-	'<'  reduce 64
-	'+'  reduce 64
-	'-'  reduce 64
-	';'  reduce 64
-	','  reduce 64
-	'('  reduce 64
-	')'  reduce 64
-	':'  reduce 64
+	AND  shift 109
+	OR  shift 110
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	IDENT  reduce 70
+	NUM  reduce 70
+	DOUBLE  reduce 70
+	TRUE  reduce 70
+	FALSE  reduce 70
+	LITERAL  reduce 70
+	IF  reduce 70
+	WHILE  reduce 70
+	FOR  reduce 70
+	ESCREVA  reduce 70
+	LEIA  reduce 70
+	'='  reduce 70
+	';'  reduce 70
+	','  reduce 70
+	'('  reduce 70
+	')'  reduce 70
+	':'  reduce 70
 
 
-state 145
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp '-' exp .  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 141
+	exp : exp . '+' exp  (65)
+	exp : exp '+' exp .  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	AND  shift 110
-	OR  shift 111
-	'/'  shift 119
-	'*'  shift 120
-	IDENT  reduce 66
-	NUM  reduce 66
-	DOUBLE  reduce 66
-	TRUE  reduce 66
-	FALSE  reduce 66
-	LITERAL  reduce 66
-	IF  reduce 66
-	WHILE  reduce 66
-	FOR  reduce 66
-	ESCREVA  reduce 66
-	LEIA  reduce 66
-	GREATEREQUAL  reduce 66
-	LESSEREQUAL  reduce 66
-	'='  reduce 66
-	'>'  reduce 66
-	'<'  reduce 66
-	'+'  reduce 66
-	'-'  reduce 66
-	';'  reduce 66
-	','  reduce 66
-	'('  reduce 66
-	')'  reduce 66
-	':'  reduce 66
-
-
-state 146
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp '/' exp .  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-
-	AND  shift 110
-	OR  shift 111
-	IDENT  reduce 67
-	NUM  reduce 67
-	DOUBLE  reduce 67
-	TRUE  reduce 67
-	FALSE  reduce 67
-	LITERAL  reduce 67
-	IF  reduce 67
-	WHILE  reduce 67
-	FOR  reduce 67
-	ESCREVA  reduce 67
-	LEIA  reduce 67
-	GREATEREQUAL  reduce 67
-	LESSEREQUAL  reduce 67
-	'='  reduce 67
-	'>'  reduce 67
-	'<'  reduce 67
-	'+'  reduce 67
-	'-'  reduce 67
-	'/'  reduce 67
-	'*'  reduce 67
-	';'  reduce 67
-	','  reduce 67
-	'('  reduce 67
-	')'  reduce 67
-	':'  reduce 67
-
-
-state 147
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp '*' exp .  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-
-	AND  shift 110
-	OR  shift 111
+	AND  shift 109
+	OR  shift 110
+	'/'  shift 118
+	'*'  shift 119
 	IDENT  reduce 65
 	NUM  reduce 65
 	DOUBLE  reduce 65
@@ -2005,8 +1845,6 @@ state 147
 	'<'  reduce 65
 	'+'  reduce 65
 	'-'  reduce 65
-	'/'  reduce 65
-	'*'  reduce 65
 	';'  reduce 65
 	','  reduce 65
 	'('  reduce 65
@@ -2014,9 +1852,138 @@ state 147
 	':'  reduce 65
 
 
-state 148
+state 142
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp '-' exp .  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	'/'  shift 118
+	'*'  shift 119
+	IDENT  reduce 67
+	NUM  reduce 67
+	DOUBLE  reduce 67
+	TRUE  reduce 67
+	FALSE  reduce 67
+	LITERAL  reduce 67
+	IF  reduce 67
+	WHILE  reduce 67
+	FOR  reduce 67
+	ESCREVA  reduce 67
+	LEIA  reduce 67
+	GREATEREQUAL  reduce 67
+	LESSEREQUAL  reduce 67
+	'='  reduce 67
+	'>'  reduce 67
+	'<'  reduce 67
+	'+'  reduce 67
+	'-'  reduce 67
+	';'  reduce 67
+	','  reduce 67
+	'('  reduce 67
+	')'  reduce 67
+	':'  reduce 67
+
+
+state 143
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp '/' exp .  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	IDENT  reduce 68
+	NUM  reduce 68
+	DOUBLE  reduce 68
+	TRUE  reduce 68
+	FALSE  reduce 68
+	LITERAL  reduce 68
+	IF  reduce 68
+	WHILE  reduce 68
+	FOR  reduce 68
+	ESCREVA  reduce 68
+	LEIA  reduce 68
+	GREATEREQUAL  reduce 68
+	LESSEREQUAL  reduce 68
+	'='  reduce 68
+	'>'  reduce 68
+	'<'  reduce 68
+	'+'  reduce 68
+	'-'  reduce 68
+	'/'  reduce 68
+	'*'  reduce 68
+	';'  reduce 68
+	','  reduce 68
+	'('  reduce 68
+	')'  reduce 68
+	':'  reduce 68
+
+
+state 144
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp '*' exp .  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	IDENT  reduce 66
+	NUM  reduce 66
+	DOUBLE  reduce 66
+	TRUE  reduce 66
+	FALSE  reduce 66
+	LITERAL  reduce 66
+	IF  reduce 66
+	WHILE  reduce 66
+	FOR  reduce 66
+	ESCREVA  reduce 66
+	LEIA  reduce 66
+	GREATEREQUAL  reduce 66
+	LESSEREQUAL  reduce 66
+	'='  reduce 66
+	'>'  reduce 66
+	'<'  reduce 66
+	'+'  reduce 66
+	'-'  reduce 66
+	'/'  reduce 66
+	'*'  reduce 66
+	';'  reduce 66
+	','  reduce 66
+	'('  reduce 66
+	')'  reduce 66
+	':'  reduce 66
+
+
+state 145
 	bloco : '{' listacmd . retorno '}'  (38)
-	listacmd : listacmd . cmd  (40)
+	listacmd : listacmd . cmd  (41)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2029,21 +1996,21 @@ state 148
 	FOR  shift 85
 	ESCREVA  shift 86
 	LEIA  shift 87
-	RETORNO  shift 155
+	RETORNO  shift 152
 	'('  shift 89
 	.  error
 
 	exp  goto 90
-	retorno  goto 156
+	retorno  goto 153
 	cmd  goto 91
 	while  goto 92
 	for  goto 93
 	metodo  goto 94
 
 
-state 149
-	metodo : IDENT '.' IDENT '(' . parametrosMetodo ')'  (83)
-	parametrosMetodo : .  (85)
+state 146
+	metodo : IDENT '.' IDENT '(' . parametrosMetodo ')'  (84)
+	parametrosMetodo : .  (86)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2052,178 +2019,163 @@ state 149
 	FALSE  shift 81
 	LITERAL  shift 82
 	'('  shift 89
-	')'  reduce 85
+	')'  reduce 86
 
-	exp  goto 157
+	exp  goto 154
 	metodo  goto 94
-	parametrosMetodo  goto 158
+	parametrosMetodo  goto 155
+
+
+state 147
+	cmd : IF exp $$10 ':' . listacmd else ENDIF  (48)
+	listacmd : .  (42)
+
+	.  reduce 42
+
+	listacmd  goto 156
+
+
+state 148
+	while : WHILE exp $$12 cmd . listacmdrep ENDWHILE  (61)
+	listacmdrep : .  (45)
+
+	BREAK  shift 157
+	IDENT  reduce 45
+	NUM  reduce 45
+	DOUBLE  reduce 45
+	TRUE  reduce 45
+	FALSE  reduce 45
+	LITERAL  reduce 45
+	IF  reduce 45
+	WHILE  reduce 45
+	ENDWHILE  reduce 45
+	FOR  reduce 45
+	ESCREVA  reduce 45
+	LEIA  reduce 45
+	'('  reduce 45
+
+	listacmdrep  goto 158
+
+
+state 149
+	for : FOR IDENT '=' exp . $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$13 : .  (62)
+
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 62
+
+	$$13  goto 159
 
 
 state 150
-	cmd : IF exp $$9 ':' . listacmd else ENDIF  (47)
-	listacmd : .  (41)
+	parametroEscreva : ',' . exp  (58)
 
-	.  reduce 41
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
+	.  error
 
-	listacmd  goto 159
+	exp  goto 160
+	metodo  goto 94
 
 
 state 151
-	while : WHILE exp $$10 cmd . listacmdrep ENDWHILE  (59)
-	listacmdrep : .  (44)
+	escreva : exp $$11 parametroEscreva .  (56)
 
-	BREAK  shift 160
-	IDENT  reduce 44
-	NUM  reduce 44
-	DOUBLE  reduce 44
-	TRUE  reduce 44
-	FALSE  reduce 44
-	LITERAL  reduce 44
-	IF  reduce 44
-	WHILE  reduce 44
-	ENDWHILE  reduce 44
-	FOR  reduce 44
-	ESCREVA  reduce 44
-	LEIA  reduce 44
-	'('  reduce 44
-
-	listacmdrep  goto 161
+	.  reduce 56
 
 
 state 152
-	atribuicaoFor : type IDENT '=' . IDENT  (61)
-	atribuicaoFor : type IDENT '=' . NUM  (62)
-	atribuicaoFor : type IDENT '=' . DOUBLE  (63)
+	retorno : RETORNO . exp $$9 ';'  (40)
 
-	IDENT  shift 162
-	NUM  shift 163
-	DOUBLE  shift 164
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
 	.  error
+
+	exp  goto 161
+	metodo  goto 94
 
 
 state 153
-	for : FOR atribuicaoFor ';' exp . ';' exp ':' cmd listacmdrep ENDFOR  (60)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+	bloco : '{' listacmd retorno . '}'  (38)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	';'  shift 165
+	'}'  shift 162
 	.  error
 
 
 state 154
-	parametroEscreva : ',' exp .  (56)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	parametrosMetodo : exp . lParametrosMetodo  (85)
+	lParametrosMetodo : .  (88)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	';'  reduce 56
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	','  shift 163
+	')'  reduce 88
+
+	lParametrosMetodo  goto 164
 
 
 state 155
-	retorno : RETORNO . exp ';'  (39)
+	metodo : IDENT '.' IDENT '(' parametrosMetodo . ')'  (84)
 
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
+	')'  shift 165
 	.  error
-
-	exp  goto 166
-	metodo  goto 94
 
 
 state 156
-	bloco : '{' listacmd retorno . '}'  (38)
-
-	'}'  shift 167
-	.  error
-
-
-state 157
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	parametrosMetodo : exp . lParametrosMetodo  (84)
-	lParametrosMetodo : .  (87)
-
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	','  shift 168
-	')'  reduce 87
-
-	lParametrosMetodo  goto 169
-
-
-state 158
-	metodo : IDENT '.' IDENT '(' parametrosMetodo . ')'  (83)
-
-	')'  shift 170
-	.  error
-
-
-state 159
-	listacmd : listacmd . cmd  (40)
-	cmd : IF exp $$9 ':' listacmd . else ENDIF  (47)
-	else : .  (53)
+	listacmd : listacmd . cmd  (41)
+	cmd : IF exp $$10 ':' listacmd . else ENDIF  (48)
+	else : .  (54)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2236,27 +2188,27 @@ state 159
 	FOR  shift 85
 	ESCREVA  shift 86
 	LEIA  shift 87
-	'['  shift 171
+	'['  shift 166
 	'('  shift 89
-	ENDIF  reduce 53
+	ENDIF  reduce 54
 
 	exp  goto 90
 	cmd  goto 91
-	else  goto 172
+	else  goto 167
 	while  goto 92
 	for  goto 93
 	metodo  goto 94
 
 
-state 160
-	listacmdrep : BREAK .  (43)
+state 157
+	listacmdrep : BREAK .  (44)
 
-	.  reduce 43
+	.  reduce 44
 
 
-state 161
-	listacmdrep : listacmdrep . cmd  (42)
-	while : WHILE exp $$10 cmd listacmdrep . ENDWHILE  (59)
+state 158
+	listacmdrep : listacmdrep . cmd  (43)
+	while : WHILE exp $$12 cmd listacmdrep . ENDWHILE  (61)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2266,7 +2218,7 @@ state 161
 	LITERAL  shift 82
 	IF  shift 83
 	WHILE  shift 84
-	ENDWHILE  shift 173
+	ENDWHILE  shift 168
 	FOR  shift 85
 	ESCREVA  shift 86
 	LEIA  shift 87
@@ -2274,32 +2226,140 @@ state 161
 	.  error
 
 	exp  goto 90
-	cmd  goto 174
+	cmd  goto 169
 	while  goto 92
 	for  goto 93
 	metodo  goto 94
 
 
+state 159
+	for : FOR IDENT '=' exp $$13 . ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
+
+	';'  shift 170
+	.  error
+
+
+state 160
+	parametroEscreva : ',' exp .  (58)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 58
+
+
+state 161
+	retorno : RETORNO exp . $$9 ';'  (40)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$9 : .  (39)
+
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 39
+
+	$$9  goto 171
+
+
 state 162
-	atribuicaoFor : type IDENT '=' IDENT .  (61)
+	bloco : '{' listacmd retorno '}' .  (38)
+
+	.  reduce 38
+
+
+state 163
+	lParametrosMetodo : ',' . exp lParametrosMetodo  (87)
+
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
+	.  error
+
+	exp  goto 172
+	metodo  goto 94
+
+
+state 164
+	parametrosMetodo : exp lParametrosMetodo .  (85)
+
+	.  reduce 85
+
+
+state 165
+	metodo : IDENT '.' IDENT '(' parametrosMetodo ')' .  (84)
+
+	.  reduce 84
+
+
+state 166
+	else : '[' . ELSE ':' cmd listacmd ']'  (53)
+
+	ELSE  shift 173
+	.  error
+
+
+state 167
+	cmd : IF exp $$10 ':' listacmd else . ENDIF  (48)
+
+	ENDIF  shift 174
+	.  error
+
+
+state 168
+	while : WHILE exp $$12 cmd listacmdrep ENDWHILE .  (61)
 
 	.  reduce 61
 
 
-state 163
-	atribuicaoFor : type IDENT '=' NUM .  (62)
+state 169
+	listacmdrep : listacmdrep cmd .  (43)
 
-	.  reduce 62
-
-
-state 164
-	atribuicaoFor : type IDENT '=' DOUBLE .  (63)
-
-	.  reduce 63
+	.  reduce 43
 
 
-state 165
-	for : FOR atribuicaoFor ';' exp ';' . exp ':' cmd listacmdrep ENDFOR  (60)
+state 170
+	for : FOR IDENT '=' exp $$13 ';' . exp $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2314,207 +2374,160 @@ state 165
 	metodo  goto 94
 
 
-state 166
-	retorno : RETORNO exp . ';'  (39)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+state 171
+	retorno : RETORNO exp $$9 . ';'  (40)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
 	';'  shift 176
 	.  error
 
 
-state 167
-	bloco : '{' listacmd retorno '}' .  (38)
-
-	.  reduce 38
-
-
-state 168
-	lParametrosMetodo : ',' . exp lParametrosMetodo  (86)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	'('  shift 89
-	.  error
-
-	exp  goto 177
-	metodo  goto 94
-
-
-state 169
-	parametrosMetodo : exp lParametrosMetodo .  (84)
-
-	.  reduce 84
-
-
-state 170
-	metodo : IDENT '.' IDENT '(' parametrosMetodo ')' .  (83)
-
-	.  reduce 83
-
-
-state 171
-	else : '[' . ELSE ':' cmd listacmd ']'  (52)
-
-	ELSE  shift 178
-	.  error
-
-
 state 172
-	cmd : IF exp $$9 ':' listacmd else . ENDIF  (47)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	lParametrosMetodo : ',' exp . lParametrosMetodo  (87)
+	lParametrosMetodo : .  (88)
 
-	ENDIF  shift 179
-	.  error
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	','  shift 163
+	')'  reduce 88
+
+	lParametrosMetodo  goto 177
 
 
 state 173
-	while : WHILE exp $$10 cmd listacmdrep ENDWHILE .  (59)
+	else : '[' ELSE . ':' cmd listacmd ']'  (53)
 
-	.  reduce 59
+	':'  shift 178
+	.  error
 
 
 state 174
-	listacmdrep : listacmdrep cmd .  (42)
+	cmd : IF exp $$10 ':' listacmd else ENDIF .  (48)
 
-	.  reduce 42
+	.  reduce 48
 
 
 state 175
-	for : FOR atribuicaoFor ';' exp ';' exp . ':' cmd listacmdrep ENDFOR  (60)
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
+	for : FOR IDENT '=' exp $$13 ';' exp . $$14 ';' exp ':' cmd listacmdrep ENDFOR  (64)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
+	$$14 : .  (63)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	':'  shift 180
-	.  error
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	';'  reduce 63
+
+	$$14  goto 179
 
 
 state 176
-	retorno : RETORNO exp ';' .  (39)
+	retorno : RETORNO exp $$9 ';' .  (40)
 
-	.  reduce 39
+	.  reduce 40
 
 
 state 177
-	exp : exp . '+' exp  (64)
-	exp : exp . '*' exp  (65)
-	exp : exp . '-' exp  (66)
-	exp : exp . '/' exp  (67)
-	exp : exp . '>' exp  (68)
-	exp : exp . '<' exp  (69)
-	exp : exp . AND exp  (70)
-	exp : exp . OR exp  (71)
-	exp : exp . LESSEREQUAL exp  (72)
-	exp : exp . GREATEREQUAL exp  (73)
-	exp : exp . '=' exp  (81)
-	lParametrosMetodo : ',' exp . lParametrosMetodo  (86)
-	lParametrosMetodo : .  (87)
+	lParametrosMetodo : ',' exp lParametrosMetodo .  (87)
 
-	AND  shift 110
-	OR  shift 111
-	GREATEREQUAL  shift 112
-	LESSEREQUAL  shift 113
-	'='  shift 114
-	'>'  shift 115
-	'<'  shift 116
-	'+'  shift 117
-	'-'  shift 118
-	'/'  shift 119
-	'*'  shift 120
-	','  shift 168
-	')'  reduce 87
-
-	lParametrosMetodo  goto 181
+	.  reduce 87
 
 
 state 178
-	else : '[' ELSE . ':' cmd listacmd ']'  (52)
+	else : '[' ELSE ':' . cmd listacmd ']'  (53)
 
-	':'  shift 182
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	IF  shift 83
+	WHILE  shift 84
+	FOR  shift 85
+	ESCREVA  shift 86
+	LEIA  shift 87
+	'('  shift 89
 	.  error
+
+	exp  goto 90
+	cmd  goto 180
+	while  goto 92
+	for  goto 93
+	metodo  goto 94
 
 
 state 179
-	cmd : IF exp $$9 ':' listacmd else ENDIF .  (47)
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 . ';' exp ':' cmd listacmdrep ENDFOR  (64)
 
-	.  reduce 47
+	';'  shift 181
+	.  error
 
 
 state 180
-	for : FOR atribuicaoFor ';' exp ';' exp ':' . cmd listacmdrep ENDFOR  (60)
+	else : '[' ELSE ':' cmd . listacmd ']'  (53)
+	listacmd : .  (42)
 
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	IF  shift 83
-	WHILE  shift 84
-	FOR  shift 85
-	ESCREVA  shift 86
-	LEIA  shift 87
-	'('  shift 89
-	.  error
+	.  reduce 42
 
-	exp  goto 90
-	cmd  goto 183
-	while  goto 92
-	for  goto 93
-	metodo  goto 94
+	listacmd  goto 182
 
 
 state 181
-	lParametrosMetodo : ',' exp lParametrosMetodo .  (86)
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' . exp ':' cmd listacmdrep ENDFOR  (64)
 
-	.  reduce 86
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	'('  shift 89
+	.  error
+
+	exp  goto 183
+	metodo  goto 94
 
 
 state 182
-	else : '[' ELSE ':' . cmd listacmd ']'  (52)
+	listacmd : listacmd . cmd  (41)
+	else : '[' ELSE ':' cmd listacmd . ']'  (53)
 
 	IDENT  shift 77
 	NUM  shift 78
@@ -2528,89 +2541,7 @@ state 182
 	ESCREVA  shift 86
 	LEIA  shift 87
 	'('  shift 89
-	.  error
-
-	exp  goto 90
-	cmd  goto 184
-	while  goto 92
-	for  goto 93
-	metodo  goto 94
-
-
-state 183
-	for : FOR atribuicaoFor ';' exp ';' exp ':' cmd . listacmdrep ENDFOR  (60)
-	listacmdrep : .  (44)
-
-	BREAK  shift 160
-	IDENT  reduce 44
-	NUM  reduce 44
-	DOUBLE  reduce 44
-	TRUE  reduce 44
-	FALSE  reduce 44
-	LITERAL  reduce 44
-	IF  reduce 44
-	WHILE  reduce 44
-	FOR  reduce 44
-	ENDFOR  reduce 44
-	ESCREVA  reduce 44
-	LEIA  reduce 44
-	'('  reduce 44
-
-	listacmdrep  goto 185
-
-
-state 184
-	else : '[' ELSE ':' cmd . listacmd ']'  (52)
-	listacmd : .  (41)
-
-	.  reduce 41
-
-	listacmd  goto 186
-
-
-state 185
-	listacmdrep : listacmdrep . cmd  (42)
-	for : FOR atribuicaoFor ';' exp ';' exp ':' cmd listacmdrep . ENDFOR  (60)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	IF  shift 83
-	WHILE  shift 84
-	FOR  shift 85
-	ENDFOR  shift 187
-	ESCREVA  shift 86
-	LEIA  shift 87
-	'('  shift 89
-	.  error
-
-	exp  goto 90
-	cmd  goto 174
-	while  goto 92
-	for  goto 93
-	metodo  goto 94
-
-
-state 186
-	listacmd : listacmd . cmd  (40)
-	else : '[' ELSE ':' cmd listacmd . ']'  (52)
-
-	IDENT  shift 77
-	NUM  shift 78
-	DOUBLE  shift 79
-	TRUE  shift 80
-	FALSE  shift 81
-	LITERAL  shift 82
-	IF  shift 83
-	WHILE  shift 84
-	FOR  shift 85
-	ESCREVA  shift 86
-	LEIA  shift 87
-	'('  shift 89
-	']'  shift 188
+	']'  shift 184
 	.  error
 
 	exp  goto 90
@@ -2620,17 +2551,118 @@ state 186
 	metodo  goto 94
 
 
-state 187
-	for : FOR atribuicaoFor ';' exp ';' exp ':' cmd listacmdrep ENDFOR .  (60)
+state 183
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp . ':' cmd listacmdrep ENDFOR  (64)
+	exp : exp . '+' exp  (65)
+	exp : exp . '*' exp  (66)
+	exp : exp . '-' exp  (67)
+	exp : exp . '/' exp  (68)
+	exp : exp . '>' exp  (69)
+	exp : exp . '<' exp  (70)
+	exp : exp . AND exp  (71)
+	exp : exp . OR exp  (72)
+	exp : exp . LESSEREQUAL exp  (73)
+	exp : exp . GREATEREQUAL exp  (74)
+	exp : exp . '=' exp  (82)
 
-	.  reduce 60
+	AND  shift 109
+	OR  shift 110
+	GREATEREQUAL  shift 111
+	LESSEREQUAL  shift 112
+	'='  shift 113
+	'>'  shift 114
+	'<'  shift 115
+	'+'  shift 116
+	'-'  shift 117
+	'/'  shift 118
+	'*'  shift 119
+	':'  shift 185
+	.  error
+
+
+state 184
+	else : '[' ELSE ':' cmd listacmd ']' .  (53)
+
+	.  reduce 53
+
+
+state 185
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' . cmd listacmdrep ENDFOR  (64)
+
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	IF  shift 83
+	WHILE  shift 84
+	FOR  shift 85
+	ESCREVA  shift 86
+	LEIA  shift 87
+	'('  shift 89
+	.  error
+
+	exp  goto 90
+	cmd  goto 186
+	while  goto 92
+	for  goto 93
+	metodo  goto 94
+
+
+state 186
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' cmd . listacmdrep ENDFOR  (64)
+	listacmdrep : .  (45)
+
+	BREAK  shift 157
+	IDENT  reduce 45
+	NUM  reduce 45
+	DOUBLE  reduce 45
+	TRUE  reduce 45
+	FALSE  reduce 45
+	LITERAL  reduce 45
+	IF  reduce 45
+	WHILE  reduce 45
+	FOR  reduce 45
+	ENDFOR  reduce 45
+	ESCREVA  reduce 45
+	LEIA  reduce 45
+	'('  reduce 45
+
+	listacmdrep  goto 187
+
+
+state 187
+	listacmdrep : listacmdrep . cmd  (43)
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep . ENDFOR  (64)
+
+	IDENT  shift 77
+	NUM  shift 78
+	DOUBLE  shift 79
+	TRUE  shift 80
+	FALSE  shift 81
+	LITERAL  shift 82
+	IF  shift 83
+	WHILE  shift 84
+	FOR  shift 85
+	ENDFOR  shift 188
+	ESCREVA  shift 86
+	LEIA  shift 87
+	'('  shift 89
+	.  error
+
+	exp  goto 90
+	cmd  goto 169
+	while  goto 92
+	for  goto 93
+	metodo  goto 94
 
 
 state 188
-	else : '[' ELSE ':' cmd listacmd ']' .  (52)
+	for : FOR IDENT '=' exp $$13 ';' exp $$14 ';' exp ':' cmd listacmdrep ENDFOR .  (64)
 
-	.  reduce 52
+	.  reduce 64
 
 
-50 terminals, 42 nonterminals
-88 grammar rules, 189 states
+50 terminals, 45 nonterminals
+89 grammar rules, 189 states

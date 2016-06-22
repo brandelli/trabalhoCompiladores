@@ -19,7 +19,7 @@ public:
 
 	Teste(bool verdade){
           v_a = "sdasdas"+a+"asdsd";
-    
+
           a = 7 >= 8;
           a = a && a;
 	  a = 7 =< 8;
@@ -64,6 +64,6 @@ public:
         Teste t;
         bool booleano, falso;
 	{
-          t = new teste(f,l);
+          
 	}
 }

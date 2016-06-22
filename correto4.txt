@@ -13,7 +13,7 @@ public:
            c.jdahskjdh();
            u = 7.15 ;
            j = 7;
-	   	 		return 7.15;
+	   	 		return "sdfsdfsd";
 	}
 
 	bool comp( )
@@ -23,7 +23,7 @@ public:
 					 c.jdahskjdh();
 					 u = 7.15 ;
 					 j = 7;
-					return 7.15;
+					return true;
 	}
 
 	int calcula( )
@@ -32,21 +32,56 @@ public:
 					 c.jdahskjdh();
 					 u = 7.15 ;
 					 j = 7;
-					return 7.15;
+					return 7;
 	}
 
 	Teste(bool verdade){
           v_a = "sdasdas"+a+"asdsd";
-
           a = 7 >= 8;
           a = a && a;
 	  			a = 7 =< 8;
           a = a || a;
+					if 7>8 :
+		            a = false;
+		 	   endIf
+
+		 	   if 7 >8 :
+		            a = false;
+		            [ else:
+		              a = true;
+		            ]
+		 	   endIf
+
+				 while true
+					 a = true;
+					 break
+				 endWhile
+
+				 while true
+					 a = true;
+				 endWhile
+
+				 for j = 7 ; 9 >=7 ; j=j+1 :
+						a = true;
+						break
+				 endFor
+
+				 for j = 7 ; 9 >=7 ; j=j+1 :
+						a = true;
+				 endFor
+
+				 Leia 5;
+				 Leia true;
+				 Leia 5.26;
+				 Leia "5";
+				 Escreva "7", 5.25;
 	}
 
-      void main(){
-
-      }
-
+		void main ()
+	        Teste t;
+	        bool booleano, falso;
+		{
+	          
+		}
 
 }

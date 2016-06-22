@@ -84,25 +84,25 @@ blocos:  blocos bl
  			|
 			;
 
-bl : INT IDENT '(' parametros ')' {currEscopo = (String)$2;
+bl : INT IDENT '(' parametros ')' {currRetorno = Tp_INT; currEscopo = (String)$2;
 TS_entry nodo = ts.pesquisa($2);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                          else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-   | BOOL   IDENT '(' parametros ')' {currEscopo = (String)$2;
+   | BOOL   IDENT '(' parametros ')' {currRetorno = Tp_BOOL ; currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-	 | DOUBLE  IDENT '(' parametros ')'  {currEscopo = (String)$2;
+	 | DOUBLE  IDENT '(' parametros ')'  { currRetorno = Tp_DOUBLE ;currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-	 | STRING IDENT '(' parametros ')' {currEscopo = (String)$2;
+	 | STRING IDENT '(' parametros ')' { currRetorno = Tp_STRING ;currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
@@ -139,7 +139,8 @@ blocoConstrutor : '{' listacmd '}';
 
 bloco : '{' listacmd retorno '}';
 
-retorno : RETORNO exp ';'
+retorno : RETORNO exp { if ($2 != currRetorno)
+  yyerror("Tipo de retorno incorreto"); }; ';'
         ;
 
 listacmd : listacmd cmd
@@ -166,13 +167,19 @@ else :  '['  ELSE  ':' cmd listacmd ']'
      |
      ;
 
-escreva : exp parametroEscreva
+escreva : exp {if ($1 != Tp_STRING ){
+      yyerror("Expressao deve ser do tipo string");}
+      } parametroEscreva
         ;
 
-leia : exp
+leia : exp {if ($1 != Tp_BOOL && $1 != Tp_INT && $1 != Tp_DOUBLE && $1 != Tp_STRING ){
+      yyerror("Expressao deve ser de um dos tipos base");}
+      }
      ;
 
-parametroEscreva : ',' exp
+parametroEscreva : ',' exp {if ($2 != Tp_BOOL && $2 != Tp_INT && $2 != Tp_DOUBLE && $2 != Tp_STRING ){
+      yyerror("Expressao deve ser de um dos tipos base");}
+      }
                  |
                  ;
 
@@ -181,13 +188,18 @@ while : WHILE exp {if ($2 != Tp_BOOL){
       } cmd listacmdrep ENDWHILE
       ;
 
-for :  FOR  atribuicaoFor  ';' exp ';' exp ':' cmd listacmdrep ENDFOR
-    ;
 
-atribuicaoFor : type IDENT '=' IDENT
-              | type IDENT '=' NUM
-              | type IDENT '=' DOUBLE
-              ;
+      for :  FOR  IDENT "=" exp { TS_entry nodo = ts.pesquisa($2);
+                         if (nodo == null)
+                            yyerror("(sem) var <" + $2 + "> nao declarada");
+                            else{
+                              validaTipo(ATRIB, (TS_entry)nodo.getTipo(), (TS_entry)$4);
+                            }
+      }  ';' exp  {if ($7 != Tp_BOOL){
+                          yyerror("Expressao deve ser booleana");}
+                          }';' exp ':' cmd listacmdrep ENDFOR
+          ;
+
 
 
 exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
@@ -216,7 +228,7 @@ exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
      | metodo
      ;
 
-metodo : IDENT '.' IDENT '(' parametrosMetodo ')' { System.out.println("veio no metodo");}
+metodo : IDENT '.' IDENT '(' parametrosMetodo ')'
       ;
 
 parametrosMetodo :  exp lParametrosMetodo
@@ -235,6 +247,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
   private Object currType;
   private String currEscopo;
   private ClasseID currClass;
+  private TS_entry currRetorno;
   private TabSimb ts;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
@@ -309,7 +322,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
 
     yyparser.yyparse();
 
-  	yyparser.listarTS();
+  	//yyparser.listarTS();
 
 	  System.out.print("\n\nFeito!\n");
 
