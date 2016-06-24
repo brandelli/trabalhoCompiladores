@@ -351,6 +351,7 @@ class Yylex {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
+  //Bruno Dorscheidt Brandelli, 122019003 João Vicente 11180565, João Berte 14280223
   private Parser yyparser;
 
   public Yylex(java.io.Reader r, Parser yyparser) {
