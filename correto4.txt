@@ -17,6 +17,16 @@ public:
 	   	 		return "sdfsdfsd";
 	}
 
+
+
+		string toString(double k,string p)
+		{
+						 c.jdahskjdh();
+						 u = 7.15 ;
+						 j = 7;
+						return "sdfsdfsd";
+		}
+
 	bool comp(int c,bool d,double e )
 	bool op1,op2;
 	{

@@ -33,5 +33,16 @@ public class TabSimb
       return null;
     }
 
+
+    public TS_entry pesquisaMetodo(String umId,int nroAtributos,String array) {
+
+      for (TS_entry nodo : lista) {
+          if (nodo.getId().equals(umId) && nroAtributos == nodo.getNumElem() && nodo.getAtribs().equals(array)) {
+        return nodo;
+            }
+      }
+      return null;
+    }
+
     public  ArrayList<TS_entry> getLista() {return lista;}
 }

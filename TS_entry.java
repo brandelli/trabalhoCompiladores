@@ -15,13 +15,13 @@ public class TS_entry
    private int nElem;
    private TS_entry tipoBase;
    private TabSimb locais;
-   private ArrayList<String> atribs;
+   private String atribs;
 
 
    // construtor para arrays
    public TS_entry(String umId, TS_entry umTipo,
 		   int ne, TS_entry umTBase,
-            String umEscopo, ClasseID umaClasse,ArrayList<String> umArray) {
+            String umEscopo, ClasseID umaClasse,String umArray) {
       id = umId;
       tipo = umTipo;
       escopo = umEscopo;
@@ -38,7 +38,7 @@ public class TS_entry
    }
 
    //Contrutor para funcoes
-   public TS_entry(String umId, TS_entry umTipo, int nro, String escopo, ClasseID classe,ArrayList<String> umArray) {
+   public TS_entry(String umId, TS_entry umTipo, int nro, String escopo, ClasseID classe,String umArray) {
       this(umId, umTipo, nro, null, escopo, classe,umArray);
    }
 
@@ -60,6 +60,10 @@ public class TS_entry
 
    public int getNumElem() {
        return nElem;
+   }
+
+   public String getAtribs() {
+       return atribs;
    }
 
    public TS_entry getTipoBase() {
@@ -84,11 +88,7 @@ public class TS_entry
        aux.append("\tnro atributos: ");
 	     aux.append(nElem);
        aux.append("\ttipo atributos: ");
-       if(atribs != null){
-         for (String t : atribs) {
-             aux.append(t+" ");
-         }
-     }
+       aux.append(atribs);
     //
     //   if (this.tipo == Parser.Tp_ARRAY) {
     // 	     aux.append(" (ne: ");

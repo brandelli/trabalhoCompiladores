@@ -87,25 +87,25 @@ blocos:  blocos bl {nroAtributos = 0;}
 			;
 
 bl : INT IDENT  { currEscopo = (String)$2;} '(' parametros ')' {currRetorno = Tp_INT;
-TS_entry nodo = ts.pesquisa($2);
+TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                          else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
    | BOOL   IDENT { currEscopo = (String)$2;} '(' parametros ')' {currRetorno = Tp_BOOL ;
-   TS_entry nodo = ts.pesquisa($2);
+   TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | DOUBLE  IDENT { currEscopo = (String)$2;} '(' parametros ')'  { currRetorno = Tp_DOUBLE ;
-   TS_entry nodo = ts.pesquisa($2);
+   TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | STRING IDENT { currEscopo = (String)$2;} '(' parametros ')' { currRetorno = Tp_STRING ;
-   TS_entry nodo = ts.pesquisa($2);
+   TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
@@ -116,11 +116,11 @@ TS_entry nodo = ts.pesquisa($2);
               }
      ;
 
-parametros :{nroAtributos++;atribs = new ArrayList<String> ();} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
+parametros :{nroAtributos++;atribs = "";} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $3 + "< jah declarada");
                           		else{ ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
-                              atribs.add(((TS_entry)$2).getTipoStr());}
+                              atribs+=((TS_entry)$2).getTipoStr();}
                         }
            |
           ;
@@ -128,7 +128,8 @@ parametros :{nroAtributos++;atribs = new ArrayList<String> ();} type IDENT lPara
 lParametros	:{nroAtributos++;} ',' type  IDENT lParametros   {  TS_entry nodo = ts.pesquisa($4);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $4 + "< jah declarada");
-                          		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));atribs.add(((TS_entry)$3).getTipoStr());};
+                          		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));
+                              atribs=atribs+" "+((TS_entry)$3).getTipoStr();};
                         }
             |
             ;
@@ -259,7 +260,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
   private TS_entry currRetorno;
   private TabSimb ts;
   private int nroAtributos;
-  private ArrayList<String> atribs;
+  private String atribs;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
 	public static TS_entry Tp_DOUBLE =  new TS_entry("double", null, "", ClasseID.TipoBase);

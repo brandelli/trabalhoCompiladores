@@ -613,7 +613,7 @@ final static String yyrule[] = {
 "lParametrosMetodo :",
 };
 
-//#line 252 "exemploSem.y"
+//#line 253 "exemploSem.y"
 
   private Yylex lexer;
 
@@ -624,7 +624,7 @@ final static String yyrule[] = {
   private TS_entry currRetorno;
   private TabSimb ts;
   private int nroAtributos;
-  private ArrayList<String> atribs;
+  private String atribs;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
 	public static TS_entry Tp_DOUBLE =  new TS_entry("double", null, "", ClasseID.TipoBase);
@@ -1044,7 +1044,7 @@ break;
 case 23:
 //#line 89 "exemploSem.y"
 {currRetorno = Tp_INT;
-TS_entry nodo = ts.pesquisa(val_peek(4).sval);
+TS_entry nodo = ts.pesquisaMetodo(val_peek(4).sval,nroAtributos,atribs);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + val_peek(4).sval + "< jah declarada");
 
@@ -1057,7 +1057,7 @@ break;
 case 26:
 //#line 95 "exemploSem.y"
 {currRetorno = Tp_BOOL ;
-   TS_entry nodo = ts.pesquisa(val_peek(4).sval);
+   TS_entry nodo = ts.pesquisaMetodo(val_peek(4).sval,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + val_peek(4).sval + "< jah declarada");
 
@@ -1070,7 +1070,7 @@ break;
 case 29:
 //#line 101 "exemploSem.y"
 { currRetorno = Tp_DOUBLE ;
-   TS_entry nodo = ts.pesquisa(val_peek(4).sval);
+   TS_entry nodo = ts.pesquisaMetodo(val_peek(4).sval,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + val_peek(4).sval + "< jah declarada");
 
@@ -1083,7 +1083,7 @@ break;
 case 32:
 //#line 107 "exemploSem.y"
 { currRetorno = Tp_STRING ;
-   TS_entry nodo = ts.pesquisa(val_peek(4).sval);
+   TS_entry nodo = ts.pesquisaMetodo(val_peek(4).sval,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + val_peek(4).sval + "< jah declarada");
 
@@ -1098,7 +1098,7 @@ case 34:
 break;
 case 35:
 //#line 119 "exemploSem.y"
-{nroAtributos++;atribs = new ArrayList<String> ();}
+{nroAtributos++;atribs = "";}
 break;
 case 36:
 //#line 119 "exemploSem.y"
@@ -1106,7 +1106,7 @@ case 36:
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + val_peek(1).sval + "< jah declarada");
                           		else{ ts.insert(new TS_entry(val_peek(1).sval, (TS_entry)val_peek(2).obj, currEscopo, currClass));
-                              atribs.add(((TS_entry)val_peek(2).obj).getTipoStr());}
+                              atribs+=((TS_entry)val_peek(2).obj).getTipoStr();}
                         }
 break;
 case 38:
@@ -1118,46 +1118,47 @@ case 39:
 {  TS_entry nodo = ts.pesquisa(val_peek(1).sval);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + val_peek(1).sval + "< jah declarada");
-                          		else {ts.insert(new TS_entry(val_peek(1).sval, (TS_entry)val_peek(2).obj, currEscopo, currClass));atribs.add(((TS_entry)val_peek(2).obj).getTipoStr());};
+                          		else {ts.insert(new TS_entry(val_peek(1).sval, (TS_entry)val_peek(2).obj, currEscopo, currClass));
+                              atribs=atribs+" "+((TS_entry)val_peek(2).obj).getTipoStr();};
                         }
 break;
 case 45:
-//#line 145 "exemploSem.y"
+//#line 146 "exemploSem.y"
 { if (val_peek(0).obj != currRetorno)
   yyerror("Tipo de retorno incorreto"); }
 break;
 case 53:
-//#line 159 "exemploSem.y"
+//#line 160 "exemploSem.y"
 {if (val_peek(0).obj != Tp_BOOL){
           yyerror("Expressao deve ser booleana");}
           }
 break;
 case 61:
-//#line 173 "exemploSem.y"
+//#line 174 "exemploSem.y"
 {if (val_peek(0).obj != Tp_STRING ){
       yyerror("Expressao deve ser do tipo string");}
       }
 break;
 case 63:
-//#line 178 "exemploSem.y"
+//#line 179 "exemploSem.y"
 {if (val_peek(0).obj != Tp_BOOL && val_peek(0).obj != Tp_INT && val_peek(0).obj != Tp_DOUBLE && val_peek(0).obj != Tp_STRING ){
       yyerror("Expressao deve ser de um dos tipos base");}
       }
 break;
 case 64:
-//#line 183 "exemploSem.y"
+//#line 184 "exemploSem.y"
 {if (val_peek(0).obj != Tp_BOOL && val_peek(0).obj != Tp_INT && val_peek(0).obj != Tp_DOUBLE && val_peek(0).obj != Tp_STRING ){
       yyerror("Expressao deve ser de um dos tipos base");}
       }
 break;
 case 66:
-//#line 189 "exemploSem.y"
+//#line 190 "exemploSem.y"
 {if (val_peek(0).obj != Tp_BOOL){
       yyerror("Expressao deve ser booleana");}
       }
 break;
 case 68:
-//#line 195 "exemploSem.y"
+//#line 196 "exemploSem.y"
 { TS_entry nodo = ts.pesquisa(val_peek(2).sval);
                          if (nodo == null)
                             yyerror("(sem) var <" + val_peek(2).sval + "> nao declarada");
@@ -1167,77 +1168,77 @@ case 68:
       }
 break;
 case 69:
-//#line 201 "exemploSem.y"
+//#line 202 "exemploSem.y"
 {if (val_peek(0).obj != Tp_BOOL){
                           yyerror("Expressao deve ser booleana");}
                           }
 break;
 case 71:
-//#line 208 "exemploSem.y"
+//#line 209 "exemploSem.y"
 { yyval.obj = validaTipo('+', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 72:
-//#line 209 "exemploSem.y"
+//#line 210 "exemploSem.y"
 { yyval.obj = validaTipo('*', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 73:
-//#line 210 "exemploSem.y"
+//#line 211 "exemploSem.y"
 { yyval.obj = validaTipo('-', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 74:
-//#line 211 "exemploSem.y"
+//#line 212 "exemploSem.y"
 { yyval.obj = validaTipo('/', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 75:
-//#line 212 "exemploSem.y"
+//#line 213 "exemploSem.y"
 { yyval.obj = validaTipo('>', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj);}
 break;
 case 76:
-//#line 213 "exemploSem.y"
+//#line 214 "exemploSem.y"
 { yyval.obj = validaTipo('<', (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj);}
 break;
 case 77:
-//#line 214 "exemploSem.y"
+//#line 215 "exemploSem.y"
 { yyval.obj = validaTipo(AND, (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 78:
-//#line 215 "exemploSem.y"
+//#line 216 "exemploSem.y"
 { yyval.obj = validaTipo(OR, (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 79:
-//#line 216 "exemploSem.y"
+//#line 217 "exemploSem.y"
 { yyval.obj = validaTipo(LESSEREQUAL, (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 80:
-//#line 217 "exemploSem.y"
+//#line 218 "exemploSem.y"
 { yyval.obj = validaTipo(GREATEREQUAL, (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj); }
 break;
 case 81:
-//#line 218 "exemploSem.y"
-{yyval.obj = Tp_BOOL;}
-break;
-case 82:
 //#line 219 "exemploSem.y"
 {yyval.obj = Tp_BOOL;}
 break;
-case 83:
+case 82:
 //#line 220 "exemploSem.y"
+{yyval.obj = Tp_BOOL;}
+break;
+case 83:
+//#line 221 "exemploSem.y"
 { yyval.obj = Tp_INT;}
 break;
 case 84:
-//#line 221 "exemploSem.y"
+//#line 222 "exemploSem.y"
 {yyval.obj = Tp_DOUBLE;}
 break;
 case 85:
-//#line 222 "exemploSem.y"
+//#line 223 "exemploSem.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 86:
-//#line 223 "exemploSem.y"
+//#line 224 "exemploSem.y"
 { yyval.obj = Tp_STRING; }
 break;
 case 87:
-//#line 224 "exemploSem.y"
+//#line 225 "exemploSem.y"
 { TS_entry nodo = ts.pesquisa(val_peek(0).sval);
     	                 if (nodo == null)
 	                        yyerror("(sem) var <" + val_peek(0).sval + "> nao declarada");
@@ -1252,10 +1253,10 @@ case 87:
 			            }
 break;
 case 88:
-//#line 236 "exemploSem.y"
+//#line 237 "exemploSem.y"
 {yyval.obj = validaTipo(ATRIB, (TS_entry)val_peek(2).obj, (TS_entry)val_peek(0).obj);}
 break;
-//#line 1182 "Parser.java"
+//#line 1183 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
