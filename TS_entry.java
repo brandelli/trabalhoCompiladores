@@ -35,6 +35,9 @@ public class TS_entry
       this(umId, umTipo, -1, null, escopo, classe);
    }
 
+   public TS_entry(String umId, TS_entry umTipo, int nro, String escopo, ClasseID classe) {
+      this(umId, umTipo, nro, null, escopo, classe);
+   }
 
    public String getId() {
        return id;
@@ -75,6 +78,8 @@ public class TS_entry
 	     aux.append(String.format("%-4s", escopo));
 	     aux.append("\tTipo: ");
 	     aux.append(tipo2str(this.tipo));
+       aux.append("\tnro atributos: ");
+	     aux.append(nElem);
     //
     //   if (this.tipo == Parser.Tp_ARRAY) {
     // 	     aux.append(" (ne: ");

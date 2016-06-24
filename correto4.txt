@@ -7,7 +7,7 @@ Teste l,log;
 double u;
 public:
 
-	string toString( )
+	string toString(int c)
 	string strA,strB;
 	{
            c.jdahskjdh();
@@ -81,7 +81,7 @@ public:
 	        Teste t;
 	        bool booleano, falso;
 		{
-	          
+
 		}
 
 }

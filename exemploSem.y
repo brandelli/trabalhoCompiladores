@@ -81,52 +81,52 @@ mList: {currClass = ClasseID.VarLocal;} blocos main
 
 		 ;
 
-blocos:  blocos bl
- 			|
+blocos:  blocos bl {nroAtributos = 0;}
+ 			| {nroAtributos = 0;}
 			;
 
-bl : INT IDENT '(' parametros ')' {currRetorno = Tp_INT; currEscopo = (String)$2;
+bl : INT IDENT  '(' parametros ')' {currRetorno = Tp_INT; currEscopo = (String)$2;
 TS_entry nodo = ts.pesquisa($2);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                         else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-   | BOOL   IDENT '(' parametros ')' {currRetorno = Tp_BOOL ; currEscopo = (String)$2;
+                         else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao));} dList bloco
+   | BOOL   IDENT  '(' parametros ')' {currRetorno = Tp_BOOL ; currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-	 | DOUBLE  IDENT '(' parametros ')'  { currRetorno = Tp_DOUBLE ;currEscopo = (String)$2;
+                            else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao));} dList bloco
+	 | DOUBLE  IDENT  '(' parametros ')'  { currRetorno = Tp_DOUBLE ;currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-	 | STRING IDENT '(' parametros ')' { currRetorno = Tp_STRING ;currEscopo = (String)$2;
+                            else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao));} dList bloco
+	 | STRING IDENT  '(' parametros ')' { currRetorno = Tp_STRING ;currEscopo = (String)$2;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, (TS_entry)currType, currEscopo, ClasseID.NomeFuncao));} dList bloco
-   | IDENT '(' parametros ')' blocoConstrutor {         if(!($1.equals(tipoClasse))){
+                            else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos, currEscopo, ClasseID.NomeFuncao));} dList bloco
+   | IDENT  '(' parametros ')' blocoConstrutor {         if(!($1.equals(tipoClasse))){
 											  yyerror("(sem) Nome de tipo <" + $1 + "> nao declarado ");
 											}
               }
      ;
 
-parametros : type IDENT lParametros  {  TS_entry nodo = ts.pesquisa($2);
+parametros :{nroAtributos++;} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
     	                    		if (nodo != null)
-                              		yyerror("(sem) variavel >" + $2 + "< jah declarada");
-                          		else ts.insert(new TS_entry($2, (TS_entry)$1, currEscopo, currClass));
+                              		yyerror("(sem) variavel >" + $3 + "< jah declarada");
+                          		else ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
                         }
            |
           ;
 
-lParametros	: ',' type  IDENT lParametros  {  TS_entry nodo = ts.pesquisa($3);
+lParametros	:{nroAtributos++;} ',' type  IDENT lParametros   {  TS_entry nodo = ts.pesquisa($4);
     	                    		if (nodo != null)
-                              		yyerror("(sem) variavel >" + $3 + "< jah declarada");
-                          		else ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
+                              		yyerror("(sem) variavel >" + $4 + "< jah declarada");
+                          		else ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));
                         }
             |
             ;
@@ -250,6 +250,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
   private ClasseID currClass;
   private TS_entry currRetorno;
   private TabSimb ts;
+  private int nroAtributos;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
 	public static TS_entry Tp_DOUBLE =  new TS_entry("double", null, "", ClasseID.TipoBase);
@@ -323,7 +324,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
 
     yyparser.yyparse();
 
-  	//yyparser.listarTS();
+  	yyparser.listarTS();
 
 	  System.out.print("\n\nFeito!\n");
 
