@@ -15,12 +15,13 @@ public class TS_entry
    private int nElem;
    private TS_entry tipoBase;
    private TabSimb locais;
+   private ArrayList<String> atribs;
 
 
    // construtor para arrays
    public TS_entry(String umId, TS_entry umTipo,
 		   int ne, TS_entry umTBase,
-            String umEscopo, ClasseID umaClasse) {
+            String umEscopo, ClasseID umaClasse,ArrayList<String> umArray) {
       id = umId;
       tipo = umTipo;
       escopo = umEscopo;
@@ -28,15 +29,17 @@ public class TS_entry
       tipoBase = umTBase;
       classe = umaClasse;
       locais = new TabSimb();
+      atribs = umArray;
    }
 
    // construtor default
    public TS_entry(String umId, TS_entry umTipo, String escopo, ClasseID classe) {
-      this(umId, umTipo, -1, null, escopo, classe);
+      this(umId, umTipo, -1, null, escopo, classe, null);
    }
 
-   public TS_entry(String umId, TS_entry umTipo, int nro, String escopo, ClasseID classe) {
-      this(umId, umTipo, nro, null, escopo, classe);
+   //Contrutor para funcoes
+   public TS_entry(String umId, TS_entry umTipo, int nro, String escopo, ClasseID classe,ArrayList<String> umArray) {
+      this(umId, umTipo, nro, null, escopo, classe,umArray);
    }
 
    public String getId() {

@@ -7,31 +7,32 @@ Teste l,log;
 double u;
 public:
 
-	string toString(int c)
+	string toString(int d,int c)
 	string strA,strB;
 	{
            c.jdahskjdh();
            u = 7.15 ;
            j = 7;
+					 strA;
 	   	 		return "sdfsdfsd";
 	}
 
-	bool comp( )
+	bool comp(int c,int d,int e )
 	bool op1,op2;
 	{
-					strA;
 					 c.jdahskjdh();
 					 u = 7.15 ;
 					 j = 7;
 					return true;
 	}
 
-	int calcula( )
+	int calcula( int c)
 	int a,cv;
 	{
 					 c.jdahskjdh();
 					 u = 7.15 ;
 					 j = 7;
+					 strA = "sdasd";
 					return 7;
 	}
 
