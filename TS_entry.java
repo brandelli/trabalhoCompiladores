@@ -83,6 +83,12 @@ public class TS_entry
 	     aux.append(tipo2str(this.tipo));
        aux.append("\tnro atributos: ");
 	     aux.append(nElem);
+       aux.append("\ttipo atributos: ");
+       if(atribs != null){
+         for (String t : atribs) {
+             aux.append(t+" ");
+         }
+     }
     //
     //   if (this.tipo == Parser.Tp_ARRAY) {
     // 	     aux.append(" (ne: ");

@@ -91,35 +91,36 @@ TS_entry nodo = ts.pesquisa($2);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                         else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,null));} dList bloco
+                         else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
    | BOOL   IDENT { currEscopo = (String)$2;} '(' parametros ')' {currRetorno = Tp_BOOL ;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao,null));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | DOUBLE  IDENT { currEscopo = (String)$2;} '(' parametros ')'  { currRetorno = Tp_DOUBLE ;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao,null));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | STRING IDENT { currEscopo = (String)$2;} '(' parametros ')' { currRetorno = Tp_STRING ;
    TS_entry nodo = ts.pesquisa($2);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos, currEscopo, ClasseID.NomeFuncao,null));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
    | IDENT  '(' parametros ')' blocoConstrutor {         if(!($1.equals(tipoClasse))){
 											  yyerror("(sem) Nome de tipo <" + $1 + "> nao declarado ");
 											}
               }
      ;
 
-parametros :{nroAtributos++;} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
+parametros :{nroAtributos++;atribs = new ArrayList<String> ();} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $3 + "< jah declarada");
-                          		else ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
+                          		else{ ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
+                              atribs.add(((TS_entry)$2).getTipoStr());}
                         }
            |
           ;
@@ -127,7 +128,7 @@ parametros :{nroAtributos++;} type IDENT lParametros { TS_entry nodo = ts.pesqui
 lParametros	:{nroAtributos++;} ',' type  IDENT lParametros   {  TS_entry nodo = ts.pesquisa($4);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $4 + "< jah declarada");
-                          		else ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));
+                          		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));atribs.add(((TS_entry)$3).getTipoStr());};
                         }
             |
             ;
@@ -226,7 +227,7 @@ exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
                       else{
                         if(!(nodo.getEscopo().equals(currEscopo))&& !(nodo.getEscopo().equals("Global"))){
                           yyerror("(sem) var <" + $1 + "> nao declarada");
-                          $$ = Tp_ERRO; 
+                          $$ = Tp_ERRO;
                           }
                           else
 			                    $$ = nodo.getTipo();
