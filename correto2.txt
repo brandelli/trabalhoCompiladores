@@ -1,8 +1,55 @@
 class Teste {
 private:
-int a,b,c;
-string d;
-double e;
-bool f;
+bool a;
+string v_a,v_b;
+int j;
+Teste l,log;
+double u;
 public:
+
+	Teste(bool verdade){
+          v_a = "sdasdas"+a+"asdsd";
+          a = 7 >= 8;
+          a = a && a;
+	  			a = 7 =< 8;
+          a = a || a;
+					if 7>8 :
+		            a = false;
+		 	   endIf
+
+		 	   if 7 >8 :
+		            a = verdade;
+		            [ else:
+		              a = true;
+		            ]
+		 	   endIf
+
+				 while true
+					 a = true;
+					 break
+				 endWhile
+
+				 while true
+					 a = true;
+				 endWhile
+
+				 for j = 7 ; 9 >=7 ; j=j+1 :
+						a = true;
+						break
+				 endFor
+
+				 for j = 7 ; 9 >=7 ; j=j+1 :
+						a = true;
+				 endFor
+
+	}
+
+		void main ()
+	        Teste t;
+	        bool booleano, falso;
+		{
+
+		}
+
+
 }

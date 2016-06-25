@@ -1,29 +1,34 @@
 class Teste {
 private:
 bool a;
-string v_a;
+string v_a,v_b;
 int j;
 Teste l,log;
 double u;
 public:
 
-	int toString( )
-	int cx,cv;
-	{
-           c.jdahskjdh();
-           u = 7.15 ;
-           j = 7;
-	   	 		return 7.15;
-	}
+int calcula( int c)
+int a,cv;
+{
+				 u = 7.15 ;
+				 j = 7;
+				return 7;
+}
 
 	Teste(bool verdade){
-          v_a = "sdasdas"+a+"asdsd";
-
-          a = 7 >= 8;
-          a = a && a;
-	  			a = 7 =< 8;
-          a = a || a;
+				 u = l.calcula(7);
+				 Leia 5;
+				 Leia true;
+				 Leia 5.26;
+				 Leia "5";
+				 Escreva "7", 5.25;
 	}
+
+		void main ()
+	        Teste t;
+	        bool booleano, falso;
+		{
+		}
 
 
 }

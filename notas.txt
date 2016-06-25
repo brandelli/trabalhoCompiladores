@@ -1,0 +1,39 @@
+-------------------------Notas-------------------------------
+Bruno Dorscheidt Brandelli 122019003 bdbrandelli@hotmail.com
+João Berte 14280223 joao.berte@acad.pucrs.br
+João Vicente 11180565 joao.silva.008@acad.pucrs.br
+
+------------------------------------------------------------------------------------------------------------------
+
+Como usar:
+-utilizar o comando make para compilar os arquivos do projeto
+-utilizar o comando java Parser arquivoASerTestado (versao sem tabela de simbolos)
+-utilizar o comando java Parser arquivoASerTestado 1 (versao com tabela de simbolos)
+Exemplos: java Parser correto1.txt , ou java java Parser correto1.txt 1
+
+------------------------------------------------------------------------------------------------------------------
+
+
+Arquivos de teste:
+* correto1.txt : Mostra uma classe com atributos e métodos, mostra sobrecarga de metodos
+validação do tipo de retorno de uma função, funcionamento das variaveis locais apenas em seus escopos
+validaçao de operações como soma e atribuição
+
+* correto2.txt : Mostra as variaveis globais sendo usadas dentro dos métodos, uso dos parametros da função
+dentro do seu escopo, assim como as variaveis locais, os comandos if, while, for, assim como o comando break no
+interior das mesmas
+
+* correto3.txt : Mostra os métodos nativos do Ajava (leia e escreva) com suas possiveis variações
+, e tambem uma atribuição junto de uma chamada de método
+
+* correto4.txt : um teste que une os anteriores, mais a instanciação de um objeto do tipo classe, e a chamada de um de seus
+métodos na main.
+
+* erro1.txt : Tentando sobrecarregar um metodo com a mesma assinatura, e tentando retornar um tipo diferente do que explicitado
+na descrição do método
+
+* erro2.txt : Tentado chamar um método que não existe, e chamando um metodo com um tipo de parametro
+que não é igual ao que o método espera.
+
+* erro3.txt : Mostrando erro nas operações existentes na linguagem, e a exigencia de valores booleanos na verificação
+do if e do while

@@ -1,11 +1,7 @@
-//Bruno Dorscheidt Brandelli, 122019003 João Vicente 11180565, João Berte 14280223
+//Bruno Dorscheidt Brandelli 122019003 bdbrandelli@hotmail.com
+//João Berte 14280223 joao.berte@acad.pucrs.br
+//João Vicente 11180565 joao.silva.008@acad.pucrs.br
 import java.util.ArrayList;
-/**
- * Write a description of class Paciente here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 public class TS_entry
 {
    private String id;
@@ -14,7 +10,6 @@ public class TS_entry
    private TS_entry tipo;
    private int nElem;
    private TS_entry tipoBase;
-   private TabSimb locais;
    private String atribs;
 
 
@@ -28,7 +23,6 @@ public class TS_entry
       nElem = ne;
       tipoBase = umTBase;
       classe = umaClasse;
-      locais = new TabSimb();
       atribs = umArray;
    }
 
@@ -73,9 +67,6 @@ public class TS_entry
    public TS_entry getTipoBase() {
        return tipoBase;
    }
-   public TabSimb getLocais() {
-       return locais;
-   }
 
    public String toString() {
        StringBuilder aux = new StringBuilder("");
@@ -93,21 +84,7 @@ public class TS_entry
 	     aux.append(nElem);
        aux.append("\ttipo atributos: ");
        aux.append(atribs);
-    //
-    //   if (this.tipo == Parser.Tp_ARRAY) {
-    // 	     aux.append(" (ne: ");
-	  //        aux.append(nElem);
-    // 	     aux.append(", tBase: ");
-	  //        aux.append(tipo2str(this.tipoBase));
-    // 	     aux.append(")");
-    //
-    // }
 
-        ArrayList<TS_entry> lista = locais.getLista();
-        for (TS_entry t : lista) {
-            aux.append("\n\t");
-	    		  aux.append(t.toString());
-        }
 
       return aux.toString();
 
@@ -124,10 +101,5 @@ public class TS_entry
 	    else                             return "erro/tp";
    }
 
-
-
-   // public void insereLocal(String id, int tp, ClasseID cl) {
-   //      locais.insert(new TS_entry(id, tp, cl));
-   //}
 
 }

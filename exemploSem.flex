@@ -3,7 +3,10 @@
 %byaccj
 
 %{
-  //Bruno Dorscheidt Brandelli, 122019003 João Vicente 11180565, João Berte 14280223
+  //Bruno Dorscheidt Brandelli 122019003 bdbrandelli@hotmail.com
+  //João Berte 14280223 joao.berte@acad.pucrs.br
+  //João Vicente 11180565 joao.silva.008@acad.pucrs.br
+
   private Parser yyparser;
 
   public Yylex(java.io.Reader r, Parser yyparser) {

@@ -1,4 +1,6 @@
-//Bruno Dorscheidt Brandelli, 122019003 João Vicente 11180565, João Berte 14280223
+//Bruno Dorscheidt Brandelli 122019003 bdbrandelli@hotmail.com
+//João Berte 14280223 joao.berte@acad.pucrs.br
+//João Vicente 11180565 joao.silva.008@acad.pucrs.br
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -34,10 +36,19 @@ public class TabSimb
     }
 
 
+        public TS_entry pesquisa(String umId,String escopo) {
+          for (TS_entry nodo : lista) {
+              if (nodo.getId().equals(umId) && (nodo.getEscopo().equals(escopo) || nodo.getEscopo().equals("Global") )) {
+    	      return nodo;
+                }
+          }
+          return null;
+        }
+
     public TS_entry pesquisaMetodo(String umId,int nroAtributos,String array) {
 
       for (TS_entry nodo : lista) {
-          if (nodo.getId().equals(umId) && nroAtributos == nodo.getNumElem() && nodo.getAtribs().equals(array)) {
+          if (nodo.getId().equals(umId) && nroAtributos == nodo.getNumElem() && nodo.getAtribs().equals(array) ) {
         return nodo;
             }
       }

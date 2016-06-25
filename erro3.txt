@@ -1,0 +1,70 @@
+class Teste {
+private:
+bool a;
+string v_a,v_b;
+int j;
+Teste l,log;
+double u;
+public:
+
+	int calcula( int c)
+	int a,cv;
+	{
+					 u = 7.15 ;
+					 j = 7;
+					return 7;
+	}
+
+	Teste(bool verdade){
+				 Escreva "7", 5.25;
+	}
+
+		void main ()
+	        Teste t;
+	        bool booleano, falso;
+		{
+		v_a = "sdasdas"+a+"asdsd";
+		a = true >= 8;
+		a = a && "asdsa";
+		a = 7 =< 8;
+		a = a || a;
+		if 7 :
+					a = false;
+	 endIf
+
+	 if 7 >8 :
+					a = false;
+					[ else:
+						a = true;
+					]
+	 endIf
+
+	 while "asd"
+		 a = true;
+		 break
+	 endWhile
+
+	 while true
+		 a = true;
+	 endWhile
+
+	 for j = 7 ; 9 >=7 ; j=j+1 :
+			a = true;
+			break
+	 endFor
+
+	 for j = 7 ; 9 >=7 ; j=j+1 :
+			a = true;
+	 endFor
+
+				t = new Teste(true);
+				Leia 5;
+				Leia true;
+				Leia 5.26;
+				Leia "5";
+				Escreva "7", 5.25;
+				t.calcula(7);
+		}
+
+
+}

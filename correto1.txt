@@ -1,4 +1,61 @@
 class Teste {
 private:
+bool a;
+string v_a,v_b;
+int j;
+Teste l,log;
+double u;
 public:
+
+	string toString(int d,string c)
+	string strB;
+	double strA;
+	{
+				d+"asd";
+				d+strA;
+	   	 return "sdfsdfsd";
+	}
+
+  string toString(int d)
+  string strA,strB;
+  {
+			 d+7;
+       return "sdfsdfsd";
+  }
+
+
+		string toString(double k,string p)
+		{
+				return "sdfsdfsd";
+		}
+
+	bool comp(int c,bool d,double e )
+	bool op1,op2;
+	{
+				return true;
+	}
+
+
+	double comp(int c,double d )
+	double op1,op2;
+	{
+				return d;
+	}
+
+	int calcula( int c)
+	int a,cv;
+	{
+  	return 1;
+	}
+
+	Teste(bool verdade){
+	}
+
+		void main ()
+	    Teste t;
+	    bool booleano, falso;
+		{
+
+		}
+
 }

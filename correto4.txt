@@ -124,7 +124,7 @@ public:
 	 for j = 7 ; 9 >=7 ; j=j+1 :
 			a = true;
 	 endFor
-
+	 
 				t = new Teste(true);
 				Leia 5;
 				Leia true;
@@ -132,7 +132,6 @@ public:
 				Leia "5";
 				Escreva "7", 5.25;
 				t.calcula(7);
-				t.calcula("asdas");
 		}
 
 

@@ -1,6 +1,8 @@
 
 %{
-  //Bruno Dorscheidt Brandelli, 122019003 João Vicente 11180565, João Berte 14280223
+  //Bruno Dorscheidt Brandelli 122019003 bdbrandelli@hotmail.com
+  //João Berte 14280223 joao.berte@acad.pucrs.br
+  //João Vicente 11180565 joao.silva.008@acad.pucrs.br
   import java.io.*;
   import java.util.ArrayList;
 %}
@@ -88,28 +90,28 @@ blocos:  blocos bl {nroAtributos = 0;}
 
 bl : INT IDENT  { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' {currRetorno = Tp_INT;
 TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
-                         if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                         if (nodo != null && nodo.getEscopo().equals((String)$2))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                         else{ ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));}} dList bloco
+                         else{ ts.insert(new TS_entry($2, Tp_INT, nroAtributos, (String)$2, ClasseID.NomeFuncao,atribs));}} dList bloco
    | BOOL   IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' {currRetorno = Tp_BOOL ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
-                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                            if (nodo != null)
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, (String)$2, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | DOUBLE  IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')'  { currRetorno = Tp_DOUBLE ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
-                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                            if (nodo != null )
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, (String)$2, ClasseID.NomeFuncao,atribs));} dList bloco
 	 | STRING IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' { currRetorno = Tp_STRING ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
-                            if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                            if (nodo != null )
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                            else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
+                            else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos,(String)$2, ClasseID.NomeFuncao,atribs));} dList bloco
    | IDENT  { currEscopo = (String)$1+idTs;idTs++;} '(' parametros ')' blocoConstrutor {
                             if(!($1.equals(tipoClasse))){
 											  yyerror("(sem) Nome de tipo <" + $1 + "> nao declarado ");
@@ -123,7 +125,7 @@ TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
 parametros :{nroAtributos++;atribs = "";} type IDENT lParametros { TS_entry nodo = ts.pesquisa($3);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $3 + "< jah declarada");
-                          		else{ ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
+                          		else{ ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, ClasseID.NomeParam));
                               atribs+=((TS_entry)$2).getTipoStrParam() ;}
                         }
            |
@@ -132,7 +134,7 @@ parametros :{nroAtributos++;atribs = "";} type IDENT lParametros { TS_entry nodo
 lParametros	:{nroAtributos++;} ',' type  IDENT lParametros   {  TS_entry nodo = ts.pesquisa($4);
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $4 + "< jah declarada");
-                          		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));
+                          		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo,  ClasseID.NomeParam));
                               atribs=atribs+""+((TS_entry)$3).getTipoStrParam();};
                         }
             |
@@ -226,11 +228,15 @@ exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
     | DOUBLE       {$$ = Tp_DOUBLE;}
     | '(' exp ')' { $$ = $2; }
     | LITERAL    { $$ = Tp_STRING; }
-    | IDENT       { TS_entry nodo = ts.pesquisa($1);
-    	                 if (nodo == null)
+    | IDENT       { TS_entry nodo = ts.pesquisa($1,currEscopo);
+    	                 if (nodo == null){
+                          $$ = Tp_ERRO;
 	                        yyerror("(sem) var <" + $1 + "> nao declarada");
+                          }
                       else{
-                        if(!(nodo.getEscopo().equals(currEscopo))&& !(nodo.getEscopo().equals("Global"))){
+                        if(!(nodo.getEscopo().equals(currEscopo)) && !(nodo.getEscopo().equals("Global"))){
+                          yyerror(nodo.getEscopo());
+                          yyerror(currEscopo);
                           yyerror("(sem) var <" + $1 + "> nao declarada");
                           $$ = Tp_ERRO;
                           }
@@ -362,10 +368,6 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
 
     ts = new TabSimb();
 
-    //
-    // não me parece que necessitem estar na TS
-    // já que criei todas como public static...
-    //
     ts.insert(Tp_ERRO);
     ts.insert(Tp_INT);
     ts.insert(Tp_DOUBLE);
@@ -388,22 +390,22 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
 
     Parser yyparser;
     if ( args.length > 0 ) {
-      // parse a file
       yyparser = new Parser(new FileReader(args[0]));
     }
     else {
-      // interactive mode
       System.out.println("[Quit with CTRL-D]");
       System.out.print("Programa de entrada:\n");
 	    yyparser = new Parser(new InputStreamReader(System.in));
     }
 
+
     yyparser.yyparse();
-
-  	yyparser.listarTS();
-
-	  System.out.print("\n\nFeito!\n");
-
+    if ( args.length > 1 ){
+      if(args[1].equals("1")){
+    	 yyparser.listarTS();
+    }
+  }
+  System.out.print("\n\nFeito!\n");
   }
 
 
@@ -417,7 +419,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
                          (A == B) )
                          return A;
                      else
-                         yyerror("(sem) tipos incomp. para atribuicao: "+ A.getTipoStr() + " = "+B.getTipoStr());
+                         yyerror("(sem) tipos incomp. para atribuicao: "+ A.getTipoStrParam() + " = "+B.getTipoStrParam());
                     break;
 
             case '-' :
@@ -427,7 +429,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
       				              		      (B == Tp_DOUBLE && (A == Tp_INT || A == Tp_DOUBLE)) )
                                return Tp_DOUBLE;
                           else
-                              yyerror("(sem) tipos incomp. para subtracao: "+ A.getTipoStr() + " + "+B.getTipoStr());
+                              yyerror("(sem) tipos incomp. para subtracao: "+ A.getTipoStrParam() + " + "+B.getTipoStrParam());
                           break;
               case '+' :
                     if ( A == Tp_INT && B == Tp_INT)
@@ -438,7 +440,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
                     else if (A==Tp_STRING || B==Tp_STRING)
                         return Tp_STRING;
                     else
-                        yyerror("(sem) tipos incomp. para soma: "+ A.getTipoStr() + " + "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para soma: "+ A.getTipoStrParam() + " + "+B.getTipoStrParam());
                     break;
 
             case '/' :
@@ -448,7 +450,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
               				            (B == Tp_DOUBLE && (A == Tp_INT || A == Tp_DOUBLE)) )
                                   return Tp_DOUBLE;
                       else
-                                  yyerror("(sem) tipos incomp. para divisao: "+ A.getTipoStr() + " + "+B.getTipoStr());
+                                  yyerror("(sem) tipos incomp. para divisao: "+ A.getTipoStrParam() + " + "+B.getTipoStrParam());
                                   break;
 
             case '*' :
@@ -458,7 +460,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
                                 (B == Tp_DOUBLE && (A == Tp_INT || A == Tp_DOUBLE)) )
                                    return Tp_DOUBLE;
                       else
-                                   yyerror("(sem) tipos incomp. para multiplicacao: "+ A.getTipoStr() + " + "+B.getTipoStr());
+                                   yyerror("(sem) tipos incomp. para multiplicacao: "+ A.getTipoStrParam() + " + "+B.getTipoStrParam());
                                    break;
 
 
@@ -466,52 +468,42 @@ lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
    	              if ((A == Tp_INT || A == Tp_DOUBLE) && (B == Tp_INT || B == Tp_DOUBLE))
                          return Tp_BOOL;
 					        else
-                         yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStr() + " > "+B.getTipoStr());
+                         yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStrParam() + " > "+B.getTipoStrParam());
 			            break;
             case '<' :
         	        if ((A == Tp_INT || A == Tp_DOUBLE) && (B == Tp_INT || B == Tp_DOUBLE))
                         return Tp_BOOL;
      					    else
-                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStr() + " > "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStrParam() + " > "+B.getTipoStrParam());
      			        break;
 
            case GREATEREQUAL :
               	  if ((A == Tp_INT || A == Tp_DOUBLE) && (B == Tp_INT || B == Tp_DOUBLE))
                         return Tp_BOOL;
            				else
-                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStr() + " > "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStrParam() + " > "+B.getTipoStrParam());
            			  break;
 
            case LESSEREQUAL :
                  if ((A == Tp_INT || A == Tp_DOUBLE) && (B == Tp_INT || B == Tp_DOUBLE))
                         return Tp_BOOL;
                  else
-                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStr() + " > "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para op relacional: "+ A.getTipoStrParam() + " > "+B.getTipoStrParam());
                  break;
 
              case AND:
  	                if (A == Tp_BOOL && B == Tp_BOOL)
                          return Tp_BOOL;
 					       else
-                        yyerror("(sem) tipos incomp. para op lógica: "+ A.getTipoStr() + " && "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para op lógica: "+ A.getTipoStrParam() + " && "+B.getTipoStrParam());
                  break;
 
              case OR:
                   if (A == Tp_BOOL && B == Tp_BOOL)
                          return Tp_BOOL;
                   else
-                        yyerror("(sem) tipos incomp. para op lógica: "+ A.getTipoStr() + " && "+B.getTipoStr());
+                        yyerror("(sem) tipos incomp. para op lógica: "+ A.getTipoStrParam() + " && "+B.getTipoStrParam());
                   break;
             						}
             return Tp_ERRO;
 				}
-
-/*
-  | IDENT '=' exp
-                 { TS_entry nodo = ts.pesquisa($1);
-    	             if (nodo == null)
-                       yyerror("(sem) variavel >" + $1 + "< nao declarada");
-                   else
-                       $$ = validaTipo(ATRIB, nodo.getTipo(), (TS_entry)$3);
-                   }
-*/

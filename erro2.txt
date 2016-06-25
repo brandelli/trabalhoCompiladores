@@ -1,53 +1,44 @@
-int i;
+class Teste {
+private:
+bool a;
+string v_a,v_b;
+int j;
+Teste l,log;
+double u;
+public:
 
-float x;
-
-bool b;
-
-int[10] vint;
-float [20] vfloat;
-bool[30] vbool;
-
-
-void main() {
-
-   i = 5;
-   
-   i = vint[x];
-
-   i = vint[i>2];
-    
-   i = vfloat[2] + i;
-
-   b = vbool[i+1] + 1;
-
-   b = vfloat[ vint[i] + i ] && 5;
-   
-   vint[3] = x;
-
-   vint[i] = i>2;
-    
-   vfloat[x] = x + i;
-
-   vbool[i+1] = x + i;
-
-   vbool[ vint[4] + 2 ] = vfloat[ vint[i] + i ] ;
-
-
+int calcula( int c)
+int a,cv;
+{
+        l.calc();
+				 u = 7.15 ;
+				 j = 7;
+				return 7;
 }
 
 
+double calcula( int d,bool oi	)
+int a,cv;
+{
+				 u = 7.15 ;
+				 j = 7;
+				return a;
+}
+
+	Teste(bool verdade){
+				 u = l.calcula(true);
+				 Leia 5;
+				 Leia true;
+				 Leia 5.26;
+				 Leia "5";
+				 Escreva "7", 5.25;
+	}
+
+		void main ()
+	        Teste t;
+	        bool booleano, falso;
+		{
+		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+}
