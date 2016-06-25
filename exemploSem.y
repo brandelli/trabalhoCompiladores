@@ -24,7 +24,7 @@
 
 %%
 
-prog : { currEscopo = "Global"; currClass = ClasseID.VarGlobal; } clas ;
+prog : { currEscopo = "Global"; currClass = ClasseID.VarGlobal;idTs = 0; } clas ;
 
 clas :  CLASSE IDENT {tipoClasse = (String)$2;  TS_entry nodo = ts.pesquisa($2);
     	                    if (nodo != null && nodo.getEscopo().equals(currEscopo))
@@ -86,25 +86,25 @@ blocos:  blocos bl {nroAtributos = 0;}
  			|
 			;
 
-bl : INT IDENT  { currEscopo = (String)$2;} '(' parametros ')' {currRetorno = Tp_INT;
+bl : INT IDENT  { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' {currRetorno = Tp_INT;
 TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                          else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
-   | BOOL   IDENT { currEscopo = (String)$2;} '(' parametros ')' {currRetorno = Tp_BOOL ;
+   | BOOL   IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' {currRetorno = Tp_BOOL ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, Tp_BOOL,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
-	 | DOUBLE  IDENT { currEscopo = (String)$2;} '(' parametros ')'  { currRetorno = Tp_DOUBLE ;
+	 | DOUBLE  IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')'  { currRetorno = Tp_DOUBLE ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, Tp_DOUBLE,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
-	 | STRING IDENT { currEscopo = (String)$2;} '(' parametros ')' { currRetorno = Tp_STRING ;
+	 | STRING IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' { currRetorno = Tp_STRING ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
@@ -252,7 +252,7 @@ lParametrosMetodo : ',' exp lParametrosMetodo
 %%
 
   private Yylex lexer;
-
+  private int idTs;
   private String tipoClasse;
   private Object currType;
   private String currEscopo;

@@ -616,7 +616,7 @@ final static String yyrule[] = {
 //#line 253 "exemploSem.y"
 
   private Yylex lexer;
-
+  private int idTs;
   private String tipoClasse;
   private Object currType;
   private String currEscopo;
@@ -969,7 +969,7 @@ boolean doaction;
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
 //#line 27 "exemploSem.y"
-{ currEscopo = "Global"; currClass = ClasseID.VarGlobal; }
+{ currEscopo = "Global"; currClass = ClasseID.VarGlobal;idTs = 0; }
 break;
 case 3:
 //#line 29 "exemploSem.y"
@@ -1039,7 +1039,7 @@ case 20:
 break;
 case 22:
 //#line 89 "exemploSem.y"
-{ currEscopo = (String)val_peek(0).sval;}
+{ currEscopo = (String)val_peek(0).sval+idTs;idTs++;}
 break;
 case 23:
 //#line 89 "exemploSem.y"
@@ -1052,7 +1052,7 @@ TS_entry nodo = ts.pesquisaMetodo(val_peek(4).sval,nroAtributos,atribs);
 break;
 case 25:
 //#line 95 "exemploSem.y"
-{ currEscopo = (String)val_peek(0).sval;}
+{ currEscopo = (String)val_peek(0).sval+idTs;idTs++;}
 break;
 case 26:
 //#line 95 "exemploSem.y"
@@ -1065,7 +1065,7 @@ case 26:
 break;
 case 28:
 //#line 101 "exemploSem.y"
-{ currEscopo = (String)val_peek(0).sval;}
+{ currEscopo = (String)val_peek(0).sval+idTs;idTs++;}
 break;
 case 29:
 //#line 101 "exemploSem.y"
@@ -1078,7 +1078,7 @@ case 29:
 break;
 case 31:
 //#line 107 "exemploSem.y"
-{ currEscopo = (String)val_peek(0).sval;}
+{ currEscopo = (String)val_peek(0).sval+idTs;idTs++;}
 break;
 case 32:
 //#line 107 "exemploSem.y"

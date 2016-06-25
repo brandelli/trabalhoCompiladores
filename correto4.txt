@@ -10,7 +10,6 @@ public:
 	string toString(int d,string c)
 	string strA,strB;
 	{
-           c.jdahskjdh();
            u = 7.15 ;
            j = 7;
 					 strA;
@@ -21,7 +20,7 @@ public:
 
 		string toString(double k,string p)
 		{
-						 c.jdahskjdh();
+						 strA = "sdasda";
 						 u = 7.15 ;
 						 j = 7;
 						return "sdfsdfsd";
