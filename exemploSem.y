@@ -21,6 +21,7 @@
 %type <ival> NUM
 %type <obj> type
 %type <obj> exp
+%type <obj> metodo
 
 %%
 
@@ -49,7 +50,6 @@ dList : type {currType = $1;} decl dList
 decl : IDENT moreDecl ';'{  TS_entry nodo = ts.pesquisa($1);
     	                    if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               yyerror("(sem) variavel >" + $1 + "< jah declarada");
-
                           else ts.insert(new TS_entry($1, (TS_entry)currType, currEscopo, currClass));
                         }
       ;
@@ -91,7 +91,7 @@ TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                          if (nodo != null && nodo.getEscopo().equals(currEscopo))
                              yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
-                         else ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
+                         else{ ts.insert(new TS_entry($2, Tp_INT, nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));}} dList bloco
    | BOOL   IDENT { currEscopo = (String)$2+idTs;idTs++;} '(' parametros ')' {currRetorno = Tp_BOOL ;
    TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                             if (nodo != null && nodo.getEscopo().equals(currEscopo))
@@ -110,9 +110,13 @@ TS_entry nodo = ts.pesquisaMetodo($2,nroAtributos,atribs);
                                 yyerror("metodo ja declarado >" + $2 + "< jah declarada");
 
                             else ts.insert(new TS_entry($2, Tp_STRING,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));} dList bloco
-   | IDENT  '(' parametros ')' blocoConstrutor {         if(!($1.equals(tipoClasse))){
+   | IDENT  { currEscopo = (String)$1+idTs;idTs++;} '(' parametros ')' blocoConstrutor {
+                            if(!($1.equals(tipoClasse))){
 											  yyerror("(sem) Nome de tipo <" + $1 + "> nao declarado ");
-											}
+											}else{TS_entry nodo = ts.pesquisaMetodo($1,nroAtributos,atribs);
+                                               if (nodo != null && nodo.getEscopo().equals(currEscopo))
+                                                   yyerror("metodo ja declarado >" + $1 + "< jah declarada");
+                                               else ts.insert(new TS_entry($1, Tp_CLASS,nroAtributos, currEscopo, ClasseID.NomeFuncao,atribs));}
               }
      ;
 
@@ -120,7 +124,7 @@ parametros :{nroAtributos++;atribs = "";} type IDENT lParametros { TS_entry nodo
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $3 + "< jah declarada");
                           		else{ ts.insert(new TS_entry($3, (TS_entry)$2, currEscopo, currClass));
-                              atribs+=((TS_entry)$2).getTipoStr();}
+                              atribs+=((TS_entry)$2).getTipoStrParam() ;}
                         }
            |
           ;
@@ -129,13 +133,13 @@ lParametros	:{nroAtributos++;} ',' type  IDENT lParametros   {  TS_entry nodo = 
     	                    		if (nodo != null && nodo.getEscopo().equals(currEscopo))
                               		yyerror("(sem) variavel >" + $4 + "< jah declarada");
                           		else {ts.insert(new TS_entry($4, (TS_entry)$3, currEscopo, currClass));
-                              atribs=atribs+" "+((TS_entry)$3).getTipoStr();};
+                              atribs=atribs+""+((TS_entry)$3).getTipoStrParam();};
                         }
             |
             ;
 
 
-main :  VOID MAIN '(' ')' dList blocoConstrutor
+main :  VOID MAIN { currEscopo = "Main";idTs++;} '(' ')' dList blocoConstrutor
      |
 		 ;
 
@@ -235,17 +239,77 @@ exp : exp '+' exp { $$ = validaTipo('+', (TS_entry)$1, (TS_entry)$3); }
                         }
 			            }
      | exp '=' exp  {$$ = validaTipo(ATRIB, (TS_entry)$1, (TS_entry)$3);}
-     | metodo
+     | metodo {$$ = $1;}
+     |NEW IDENT {nroAtributosParametros = 0; atribsParametros="";}
+     '(' parametrosMetodo ')' {
+         TS_entry n = ts.pesquisaMetodo((String)$2,nroAtributosParametros,atribsParametros);
+         if(n == null){
+           $$ = Tp_ERRO;
+           yyerror("metodo nao valido");
+         }else{
+           if(n.getTipoStr().equals("class"))
+           $$ = Tp_CLASS;
+           else
+           $$ = Tp_ERRO;
+         }
+       }
+
+
+
      ;
 
-metodo : IDENT '.' IDENT '(' parametrosMetodo ')'
+metodo : IDENT '.' IDENT {nroAtributosParametros = 0; atribsParametros="";} '(' parametrosMetodo ')' {
+                                                      TS_entry nodo = ts.pesquisa($1);
+                                                      if(nodo == null){
+                                                        yyerror("(sem) var <" + $1 + "> nao declarada");
+                                                        $$ = Tp_ERRO;
+                                                      }else{
+                                                        if(!(nodo.getTipoStr().equals("class"))){
+                                                          yyerror("variavel nao é do tipo classe");
+                                                          $$ = Tp_ERRO;
+                                                        }else{
+                                                          TS_entry n = ts.pesquisaMetodo((String)$3,nroAtributosParametros,atribsParametros);
+                                                          if(n == null){
+                                                            $$ = Tp_ERRO;
+                                                            yyerror("metodo nao valido");
+                                                          }else{
+                                                            $$ = n.getTipo();
+                                                          }
+                                                        }
+
+                                                      }
+}
       ;
 
-parametrosMetodo :  exp lParametrosMetodo
+parametrosMetodo :  exp lParametrosMetodo { if($1 == Tp_STRING)
+                                                atribsParametros+="string";
+                                                else if($1 == Tp_BOOL){
+                                                atribsParametros+="boolean";
+                                                }else if($1 == Tp_DOUBLE){
+                                                atribsParametros+="double";
+                                                }else if($1 == Tp_INT){
+                                                atribsParametros+="int";
+                                                }else if($1 == Tp_CLASS){
+                                                atribsParametros+="tipo de classe";
+                                                }
+                                                nroAtributosParametros++;
+                                                }
                  |
                  ;
 
-lParametrosMetodo : ',' exp lParametrosMetodo
+lParametrosMetodo : ',' exp lParametrosMetodo { if($2 == Tp_STRING)
+                                                atribsParametros+="string";
+                                                else if($2 == Tp_BOOL){
+                                                atribsParametros+="boolean";
+                                                }else if($2 == Tp_DOUBLE){
+                                                atribsParametros+="double";
+                                                }else if($2 == Tp_INT){
+                                                atribsParametros+="int";
+                                                }else if($2 == Tp_CLASS){
+                                                atribsParametros+="tipo de classe ";
+                                                }
+                                                nroAtributosParametros++;
+                                                }
                   |
                   ;
 
@@ -260,7 +324,9 @@ lParametrosMetodo : ',' exp lParametrosMetodo
   private TS_entry currRetorno;
   private TabSimb ts;
   private int nroAtributos;
+  private int nroAtributosParametros;
   private String atribs;
+  private String atribsParametros;
 
   public static TS_entry Tp_INT =  new TS_entry("int", null, "", ClasseID.TipoBase);
 	public static TS_entry Tp_DOUBLE =  new TS_entry("double", null, "", ClasseID.TipoBase);

@@ -1,7 +1,7 @@
 class Teste {
 private:
 bool a;
-string v_a;
+string v_a,v_b;
 int j;
 Teste l,log;
 double u;
@@ -20,7 +20,7 @@ public:
 
 		string toString(double k,string p)
 		{
-						 strA = "sdasda";
+
 						 u = 7.15 ;
 						 j = 7;
 						return "sdfsdfsd";
@@ -29,7 +29,9 @@ public:
 	bool comp(int c,bool d,double e )
 	bool op1,op2;
 	{
-					 c.jdahskjdh();
+
+					 v_b = l.toString( u,v_a);
+					 op1 = true;
 					 u = 7.15 ;
 					 j = 7;
 					return true;
@@ -38,7 +40,6 @@ public:
 	int calcula( int c)
 	int a,cv;
 	{
-					 c.jdahskjdh();
 					 u = 7.15 ;
 					 j = 7;
 					return 7;
@@ -90,7 +91,7 @@ public:
 	        Teste t;
 	        bool booleano, falso;
 		{
-
+				t = new Teste(true);
 		}
 
 }

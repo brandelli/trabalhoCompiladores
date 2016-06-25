@@ -51,6 +51,10 @@ public class TS_entry
    }
 
    public String getTipoStr() {
+       return tipo2str(this.tipo);
+   }
+
+   public String getTipoStrParam() {
        return tipo2str(this);
    }
 
